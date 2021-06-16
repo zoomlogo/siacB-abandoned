@@ -20,7 +20,7 @@ class Interpreter:
         # Output
         elif op == 'ö':
             self.auto_output = False
-            print(self.memory_stack[-1])
+            print(self.memory_stack.pop())
         # Constants
         elif op.isdigit():
             digit_end = self.get_chars_bounds(after, "0123456789")[1]
@@ -31,7 +31,22 @@ class Interpreter:
             if isinstance(self.memory_stack[-1], int):
                 digit_end = self.get_chars_bounds(after, "0123456789")[1]
                 self.memory_stack[-1] += int(self.program[self.pointer + 1:self.pointer + digit_end])
-                self.pointer += digit_end
+                self.pointer += digit_end - 1
+        elif op == '-':
+            if isinstance(self.memory_stack[-1], int):
+                digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                self.memory_stack[-1] -= int(self.program[self.pointer + 1:self.pointer + digit_end])
+                self.pointer += digit_end - 1
+        elif op == '×':
+            if isinstance(self.memory_stack[-1], int):
+                digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                self.memory_stack[-1] *= int(self.program[self.pointer + 1:self.pointer + digit_end])
+                self.pointer += digit_end - 1
+        elif op == '÷':
+            if isinstance(self.memory_stack[-1], int):
+                digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                self.memory_stack[-1] /= int(self.program[self.pointer + 1:self.pointer + digit_end])
+                self.pointer += digit_end - 1
 
     def get_bounds(self, string, start, end):
         # Get bounds defined by closing and opening chars which are different
