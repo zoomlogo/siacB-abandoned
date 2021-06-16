@@ -23,5 +23,7 @@ if file is None:
 
 # Interpret them
 interpreter = Interpreter(file.read())
-interpreter.run()
+result = interpreter.run()
+if result is not None:
+    print(result)
 

@@ -76,4 +76,4 @@ class Interpreter:
 
             self.pointer += 1
         if self.auto_output:
-            print(self.memory_stack[-1])
+            return self.memory_stack[-1]
