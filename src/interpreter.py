@@ -30,6 +30,11 @@ class Interpreter:
         elif op == 'ö':
             self.auto_output = False
             print(self.memory_stack.pop())
+        elif op == 'ò':
+            self.auto_output = False
+            string_end = after.index('`')
+            print(after[1:string_end])
+            self.pointer += string_end
         # Constants
         elif op.isdigit():
             digit_end = self.get_chars_bounds(after, "0123456789")[1]
