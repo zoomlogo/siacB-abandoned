@@ -6,8 +6,17 @@ class Interpreter:
         self.auto_output = True
 
     def op_eval(self, op, before, after):
+        # Stack operators
+        if op == '_':
+            self.memory_stack.append(len(self.memory_stack))
+        elif op == '.':
+            self.memory_stack.append(self.memory_stack[-1])
+        elif op == ',':
+            self.memory_stack.pop()
+        elif op == '?':
+            print(self.memory_stack)
         # Input
-        if op == 'ï':
+        elif op == 'ï':
             self.memory_stack.append(int(input('int: ')))
         elif op == 'ë':
             self.memory_stack.append(float(input('float: ')))
