@@ -21,6 +21,11 @@ class Interpreter:
         elif op == 'ö':
             self.auto_output = False
             print(self.memory_stack[-1])
+        # Constants
+        elif op.isdigit():
+            digit_end = self.get_chars_bounds(after, "0123456789")[1]
+            self.memory_stack.append(int(self.program[self.pointer:digit_end]))
+            self.pointer = digit_end
 
     def get_bounds(self, string, start, end):
         is_bound = 0
