@@ -24,10 +24,17 @@ class Interpreter:
         # Constants
         elif op.isdigit():
             digit_end = self.get_chars_bounds(after, "0123456789")[1]
-            self.memory_stack.append(int(self.program[self.pointer:digit_end]))
-            self.pointer = digit_end
+            self.memory_stack.append(int(self.program[self.pointer:self.pointer + digit_end]))
+            self.pointer += digit_end - 1
+        # Operators
+        elif op == '+':
+            if isinstance(self.memory_stack[-1], int):
+                digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                self.memory_stack[-1] += int(self.program[self.pointer + 1:self.pointer + digit_end])
+                self.pointer += digit_end
 
     def get_bounds(self, string, start, end):
+        # Get bounds defined by closing and opening chars which are different
         is_bound = 0
         found_start = False
         start_index = None
@@ -80,5 +87,5 @@ class Interpreter:
             self.op_eval(op, before, after)
 
             self.pointer += 1
-        if self.auto_output:
+        if self.auto_output and len(self.memory_stack) >= 1:
             return self.memory_stack[-1]
