@@ -40,6 +40,10 @@ class Interpreter:
             digit_end = self.get_chars_bounds(after, "0123456789")[1]
             self.memory_stack.append(int(self.program[self.pointer:self.pointer + digit_end]))
             self.pointer += digit_end - 1
+        elif op == 'p':
+            string_end = after.index('`')
+            self.memory_stack.append(after[1:string_end])
+            self.pointer += string_end
         # Operators
         elif op == '+':
             if isinstance(self.memory_stack[-1], int):
