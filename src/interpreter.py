@@ -128,6 +128,16 @@ class Interpreter:
             # Jump to '}'
             if_end = self.get_bounds('{' + after, '{', '}')[1] - 1
             self.pointer += if_end - 1
+        # While loop
+        elif op == '(':
+            while_end = self.get_bounds(after, '(', ')')[1]
+            if self.memory_stack[-1]:
+                pass
+            else:
+                self.pointer += while_end
+        elif op == ')':
+            while_begin = len(before) - before.index('(') + 1
+            self.pointer -= while_begin
 
     def get_bounds(self, string, start, end):
         # Get bounds defined by closing and opening chars which are different
