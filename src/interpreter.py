@@ -16,21 +16,21 @@ class Interpreter:
         elif op == '?':
             print(self.memory_stack)
         # Input
-        elif op == 'ï':
+        elif op == 'ī':
             self.memory_stack.append(int(input('int: ')))
-        elif op == 'ë':
+        elif op == 'ē':
             self.memory_stack.append(float(input('float: ')))
-        elif op == 'ä':
+        elif op == 'ā':
             a = input('array<int>: ').split()
             a = [int(i) for i in a]
             self.memory_stack.append(a)
-        elif op == 'ü':
+        elif op == 'ū':
             self.memory_stack.append(input('string: '))
         # Output
-        elif op == 'ö':
+        elif op == 'ṭ':
             self.auto_output = False
             print(self.memory_stack.pop())
-        elif op == 'ò':
+        elif op == 'ō':
             self.auto_output = False
             string_end = after.index('`')
             print(after[1:string_end])
@@ -43,24 +43,28 @@ class Interpreter:
         # Operators
         elif op == '+':
             if isinstance(self.memory_stack[-1], int):
-                digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                self.memory_stack[-1] += int(self.program[self.pointer + 1:self.pointer + digit_end])
-                self.pointer += digit_end - 1
+                if after[1].isdigit():
+                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                    self.memory_stack[-1] += int(self.program[self.pointer + 1:self.pointer + digit_end])
+                    self.pointer += digit_end - 1
         elif op == '-':
             if isinstance(self.memory_stack[-1], int):
-                digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                self.memory_stack[-1] -= int(self.program[self.pointer + 1:self.pointer + digit_end])
-                self.pointer += digit_end - 1
+                if after[1].isdigit():
+                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                    self.memory_stack[-1] -= int(self.program[self.pointer + 1:self.pointer + digit_end])
+                    self.pointer += digit_end - 1
         elif op == '×':
             if isinstance(self.memory_stack[-1], int):
-                digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                self.memory_stack[-1] *= int(self.program[self.pointer + 1:self.pointer + digit_end])
-                self.pointer += digit_end - 1
+                if after[1].isdigit():
+                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                    self.memory_stack[-1] *= int(self.program[self.pointer + 1:self.pointer + digit_end])
+                    self.pointer += digit_end - 1
         elif op == '÷':
             if isinstance(self.memory_stack[-1], int):
-                digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                self.memory_stack[-1] /= int(self.program[self.pointer + 1:self.pointer + digit_end])
-                self.pointer += digit_end - 1
+                if after[1].isdigit():
+                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                    self.memory_stack[-1] /= int(self.program[self.pointer + 1:self.pointer + digit_end])
+                    self.pointer += digit_end - 1
 
     def get_bounds(self, string, start, end):
         # Get bounds defined by closing and opening chars which are different
