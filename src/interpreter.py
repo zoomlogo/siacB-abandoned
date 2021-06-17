@@ -44,7 +44,7 @@ class Interpreter:
             string_end = after.index('`')
             self.memory_stack.append(after[1:string_end])
             self.pointer += string_end
-        # Operators
+        # Arithmetic Operators
         elif op == '+':
             if isinstance(self.memory_stack[-1], int):
                 if after[1].isdigit():
@@ -68,6 +68,43 @@ class Interpreter:
                 if after[1].isdigit():
                     digit_end = self.get_chars_bounds(after, "0123456789")[1]
                     self.memory_stack[-1] /= int(self.program[self.pointer + 1:self.pointer + digit_end])
+                    self.pointer += digit_end - 1
+        # Comparision operators
+        elif op == '=':
+            if isinstance(self.memory_stack[-1], int):
+                if after[1].isdigit():
+                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                    self.memory_stack[-1] = self.memory_stack[-1] == int(self.program[self.pointer + 1:self.pointer + digit_end])
+                    self.pointer += digit_end - 1
+        elif op == '≠':
+            if isinstance(self.memory_stack[-1], int):
+                if after[1].isdigit():
+                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                    self.memory_stack[-1] = self.memory_stack[-1] != int(self.program[self.pointer + 1:self.pointer + digit_end])
+                    self.pointer += digit_end - 1
+        elif op == '>':
+            if isinstance(self.memory_stack[-1], int):
+                if after[1].isdigit():
+                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                    self.memory_stack[-1] = self.memory_stack[-1] > int(self.program[self.pointer + 1:self.pointer + digit_end])
+                    self.pointer += digit_end - 1
+        elif op == '<':
+            if isinstance(self.memory_stack[-1], int):
+                if after[1].isdigit():
+                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                    self.memory_stack[-1] = self.memory_stack[-1] < int(self.program[self.pointer + 1:self.pointer + digit_end])
+                    self.pointer += digit_end - 1
+        elif op == '≤':
+            if isinstance(self.memory_stack[-1], int):
+                if after[1].isdigit():
+                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                    self.memory_stack[-1] = self.memory_stack[-1] <= int(self.program[self.pointer + 1:self.pointer + digit_end])
+                    self.pointer += digit_end - 1
+        elif op == '≥':
+            if isinstance(self.memory_stack[-1], int):
+                if after[1].isdigit():
+                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
+                    self.memory_stack[-1] = self.memory_stack[-1] >= int(self.program[self.pointer + 1:self.pointer + digit_end])
                     self.pointer += digit_end - 1
 
     def get_bounds(self, string, start, end):
