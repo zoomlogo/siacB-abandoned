@@ -36,7 +36,7 @@ class Interpreter:
             print(after[1:string_end])
             self.pointer += string_end
         # Constants
-        elif op.isdigit():
+        elif op in "0123456789":
             digit_end = self.get_chars_bounds(after, "0123456789")[1]
             self.memory_stack.append(int(self.program[self.pointer:self.pointer + digit_end]))
             self.pointer += digit_end - 1
@@ -69,6 +69,13 @@ class Interpreter:
                     digit_end = self.get_chars_bounds(after, "0123456789")[1]
                     self.memory_stack[-1] /= int(self.program[self.pointer + 1:self.pointer + digit_end])
                     self.pointer += digit_end - 1
+        # Square / Cube
+        elif op == '²':
+            if isinstance(self.memory_stack[-1], int):
+                self.memory_stack[-1] = self.memory_stack[-1] ** 2
+        elif op == '³':
+            if isinstance(self.memory_stack[-1], int):
+                self.memory_stack[-1] = self.memory_stack[-1] ** 3
         # Comparision operators
         elif op == '=':
             if isinstance(self.memory_stack[-1], int):
