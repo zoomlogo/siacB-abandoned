@@ -76,6 +76,14 @@ class Interpreter:
         elif op == '³':
             if isinstance(self.memory_stack[-1], int):
                 self.memory_stack[-1] = self.memory_stack[-1] ** 3
+        # Fractions
+        elif op == '½':
+            if isinstance(self.memory_stack[-1], int):
+                self.memory_stack[-1] *= 1 / 2
+        # Negate
+        elif op == '±':
+            if isinstance(self.memory_stack[-1], int):
+                self.memory_stack[-1] *= -1
         # Comparision operators
         elif op == '=':
             if isinstance(self.memory_stack[-1], int):
