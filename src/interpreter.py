@@ -15,6 +15,10 @@ class Interpreter:
             self.memory_stack.pop()
         elif op == '?':
             print(self.memory_stack)
+        # Comments
+        elif op == '#':
+            comment_end = after.index('\n')
+            self.pointer += comment_end
         # Input
         elif op == 'ī':
             self.memory_stack.append(int(input('int: ')))
