@@ -1,216 +1,150 @@
+from sparser import TokenTypes
+
+
 class Interpreter:
-    def __init__(self, program):
-        self.program = program
+    def __init__(self, tokens, logobj):
+        self.tokens = tokens
+        self.log = logobj
         self.pointer = 0
         self.memory_stack = []
         self.auto_output = True
 
     def op_eval(self, op, before, after):
+        if self.log is not None:
+            self.log.write(str(self.pointer) + '\n')
+            self.log.write('  ' + str(op) + '\n')
+            self.log.write('  ' + str(self.memory_stack) + '\n')
         # Stack operators
-        if op == '_':
+        if op.value == '_':
             self.memory_stack.append(len(self.memory_stack))
-        elif op == ';':
+        elif op.value == ';':
             self.memory_stack.append(self.memory_stack[-1])
-        elif op == ',':
+        elif op.value == ',':
             self.memory_stack.pop()
-        elif op == '?':
+        elif op.value == '?':
             print(self.memory_stack)
-        # Comments
-        elif op == '#':
-            comment_end = after.index('\n')
-            self.pointer += comment_end
         # Input
-        elif op == 'ī':
+        elif op.value == 'ī':
             self.memory_stack.append(int(input('int: ')))
-        elif op == 'ē':
+        elif op.value == 'ē':
             self.memory_stack.append(float(input('float: ')))
-        elif op == 'ā':
+        elif op.value == 'ā':
             a = input('array<int>: ').split()
             a = [int(i) for i in a]
             self.memory_stack.append(a)
-        elif op == 'ū':
+        elif op.value == 'ū':
             self.memory_stack.append(input('string: '))
         # Output
-        elif op == 'ṭ':
+        elif op.value == 'ṭ':
             self.auto_output = False
             print(self.memory_stack.pop())
-        elif op == 'ō':
-            self.auto_output = False
-            string_end = after.index('`')
-            print(after[1:string_end])
-            self.pointer += string_end
+        elif op.value == 'ō':
+            print(after[1].value)
+            self.pointer += 2
         # Constants
-        elif op in "0123456789":
-            digit_end = self.get_chars_bounds(after, "0123456789")[1]
-            self.memory_stack.append(int(self.program[self.pointer:self.pointer + digit_end]))
-            self.pointer += digit_end - 1
-        elif op == 'p':
-            string_end = after.index('`')
-            self.memory_stack.append(after[1:string_end])
-            self.pointer += string_end
+        elif op.type == TokenTypes.Number:
+            self.memory_stack.append(op.value)
+            self.pointer += 1
+        elif op.value == 'p':
+            self.memory_stack.append(after[1].value)
+            self.pointer += 2
         # Arithmetic Operators
-        elif op == '+':
+        elif op.value == '+':
             if isinstance(self.memory_stack[-1], int):
-                if after[1].isdigit():
-                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                    self.memory_stack[-1] += int(self.program[self.pointer + 1:self.pointer + digit_end])
-                    self.pointer += digit_end - 1
-        elif op == '-':
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1] += after[1].value
+                    self.pointer += 1
+        elif op.value == '-':
             if isinstance(self.memory_stack[-1], int):
-                if after[1].isdigit():
-                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                    self.memory_stack[-1] -= int(self.program[self.pointer + 1:self.pointer + digit_end])
-                    self.pointer += digit_end - 1
-        elif op == '×':
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1] -= after[1].value
+                    self.pointer += 1
+        elif op.value == '×':
             if isinstance(self.memory_stack[-1], int):
-                if after[1].isdigit():
-                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                    self.memory_stack[-1] *= int(self.program[self.pointer + 1:self.pointer + digit_end])
-                    self.pointer += digit_end - 1
-        elif op == '÷':
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1] *= after[1].value
+                    self.pointer += 1
+        elif op.value == '÷':
             if isinstance(self.memory_stack[-1], int):
-                if after[1].isdigit():
-                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                    self.memory_stack[-1] /= int(self.program[self.pointer + 1:self.pointer + digit_end])
-                    self.pointer += digit_end - 1
-        # Square / Cube
-        elif op == '²':
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1] /= after[1].value
+                    self.pointer += 1
+        # Powers
+        elif op.value == '²':
             if isinstance(self.memory_stack[-1], int):
                 self.memory_stack[-1] = self.memory_stack[-1] ** 2
-        elif op == '³':
+        elif op.value == '³':
             if isinstance(self.memory_stack[-1], int):
                 self.memory_stack[-1] = self.memory_stack[-1] ** 3
         # Fractions
-        elif op == '½':
+        elif op.value == '½':
             if isinstance(self.memory_stack[-1], int):
                 self.memory_stack[-1] *= 1 / 2
         # Negate
-        elif op == '±':
+        elif op.value == '±':
             if isinstance(self.memory_stack[-1], int):
                 self.memory_stack[-1] *= -1
         # Comparision operators
-        elif op == '=':
+        elif op.value == '=':
             if isinstance(self.memory_stack[-1], int):
-                if after[1].isdigit():
-                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                    self.memory_stack[-1] = self.memory_stack[-1] == int(self.program[self.pointer + 1:self.pointer + digit_end])
-                    self.pointer += digit_end - 1
-        elif op == '≠':
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1] = self.memory_stack[-1] == after[1].value
+                    self.pointer += 1
+        elif op.value == '≠':
             if isinstance(self.memory_stack[-1], int):
-                if after[1].isdigit():
-                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                    self.memory_stack[-1] = self.memory_stack[-1] != int(self.program[self.pointer + 1:self.pointer + digit_end])
-                    self.pointer += digit_end - 1
-        elif op == '>':
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1] = self.memory_stack[-1] != after[1].value
+                    self.pointer += 1
+        elif op.value == '>':
             if isinstance(self.memory_stack[-1], int):
-                if after[1].isdigit():
-                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                    self.memory_stack[-1] = self.memory_stack[-1] > int(self.program[self.pointer + 1:self.pointer + digit_end])
-                    self.pointer += digit_end - 1
-        elif op == '<':
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1] = self.memory_stack[-1] > after[1].value
+                    self.pointer += 1
+        elif op.value == '<':
             if isinstance(self.memory_stack[-1], int):
-                if after[1].isdigit():
-                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                    self.memory_stack[-1] = self.memory_stack[-1] < int(self.program[self.pointer + 1:self.pointer + digit_end])
-                    self.pointer += digit_end - 1
-        elif op == '≤':
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1] = self.memory_stack[-1] < after[1].value
+                    self.pointer += 1
+        elif op.value == '≤':
             if isinstance(self.memory_stack[-1], int):
-                if after[1].isdigit():
-                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                    self.memory_stack[-1] = self.memory_stack[-1] <= int(self.program[self.pointer + 1:self.pointer + digit_end])
-                    self.pointer += digit_end - 1
-        elif op == '≥':
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1] = self.memory_stack[-1] <= after[1].value
+                    self.pointer += 1
+        elif op.value == '≥':
             if isinstance(self.memory_stack[-1], int):
-                if after[1].isdigit():
-                    digit_end = self.get_chars_bounds(after, "0123456789")[1]
-                    self.memory_stack[-1] = self.memory_stack[-1] >= int(self.program[self.pointer + 1:self.pointer + digit_end])
-                    self.pointer += digit_end - 1
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1] = self.memory_stack[-1] >= after[1].value
+                    self.pointer += 1
         # If statements
-        elif op == '{':
-            # We hit an if statement
-            # Get the ending
-            if_end = self.get_bounds(after, '{', '}')[1]
-            try:
-                else_begin = after[1:if_end].index(':')
-            except:
-                else_begin = None
+        elif op.value == '{':
             popped = self.memory_stack.pop()
             if popped:
                 # Do nothing
                 pass
             else:
-                if else_begin != None:
-                    self.pointer += else_begin + 1
+                if op.misc["else"] != None:
+                    self.pointer = op.misc["else"]
                 else:
-                    self.pointer += if_end - 1
-        elif op == ':':
+                    self.pointer = op.misc["end"]
+        elif op.value == ':':
             # Jump to '}'
-            if_end = self.get_bounds('{' + after, '{', '}')[1] - 1
-            self.pointer += if_end - 1
+            self.pointer = op.misc["end"]
         # While loop
-        elif op == '(':
-            while_end = self.get_bounds(after, '(', ')')[1]
+        elif op.value == '(':
             if self.memory_stack[-1]:
                 pass
             else:
-                self.pointer += while_end
-        elif op == ')':
-            while_begin = len(before) - before.index('(') + 1
-            self.pointer -= while_begin
-
-    def get_bounds(self, string, start, end):
-        # Get bounds defined by closing and opening chars which are different
-        is_bound = 0
-        found_start = False
-        start_index = None
-        end_index = None
-
-        i = 0
-        while i < len(string):
-            char = string[i]
-            if char == start:
-                if not found_start:
-                    found_start = True
-                    start_index = i
-                is_bound += 1
-            elif char == end:
-                is_bound -= 1
-                if is_bound == 0:
-                    end_index = i
-                    break
-            i += 1
-
-        return (start_index + 1, end_index)
-
-    def get_chars_bounds(self, string, chars):
-        # Get bounds for group of chars
-        in_range = False
-        start_index = None
-        end_index = None
-
-        i = 0
-        while i < len(string):
-            char = string[i]
-            if char in chars:
-                if not in_range: start_index = i
-                in_range = True
-            else:
-                if in_range:
-                    end_index = i
-                    break
-            i += 1
-
-        return (start_index, end_index)
+                self.pointer = op.misc["end"]
+        elif op.value == ')':
+            self.pointer = op.misc["start"] - 1
 
     def run(self):
         # Main loop
-        while self.pointer < len(self.program):
-            before = self.program[:self.pointer]
-            op = self.program[self.pointer]
-            after = self.program[self.pointer:]
+        while self.pointer < len(self.tokens):
+            before = self.tokens[:self.pointer]
+            token = self.tokens[self.pointer]
+            after = self.tokens[self.pointer:]
 
-            self.op_eval(op, before, after)
+            self.op_eval(token, before, after)
 
             self.pointer += 1
-        if self.auto_output and len(self.memory_stack) >= 1:
-            return self.memory_stack[-1]

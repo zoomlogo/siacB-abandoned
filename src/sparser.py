@@ -13,6 +13,9 @@ class Token:
         self.type = _type
         self.misc = misc
 
+    def __str__(self):
+        return f"Value: {self.value}, Type: {self.type}, Misc: {self.misc}"
+
 class Parser:
     def __init__(self, code):
         self.code = code
@@ -21,7 +24,7 @@ class Parser:
         self.once = False
 
         self.NUMBERS = "0123456789.e"
-        self.code_page  = self.NUMBERS + "_.,?"
+        self.code_page  = self.NUMBERS + "_;,?"
         self.code_page += "īēāūṭō"
         self.code_page += "p"
         self.code_page += "+-×÷²³½±"
@@ -30,6 +33,30 @@ class Parser:
         self.code_page += "()"
 
         assert len(self.code_page) <= 256
+
+        self.pre_parse()
+
+    def pre_parse(self):
+        # Return code witthout whitespace and Comments
+        res = ''
+        i = 0
+        while i < len(self.code):
+            c = self.code[i]
+            after = self.code[i:]
+            if c == '#':
+                comment_end = after.index('\n')
+                i += comment_end
+            elif c == 'p' or c == 'ō':
+                string_end = after.index('`')
+                res += after[:string_end]
+                i += string_end
+            elif c == ' ' or c == '\n' or c == '\t':
+                pass
+            else:
+                res += c
+            i += 1
+
+        self.code = res
 
     def parse(self):
         # Return a list of Tokens
@@ -46,37 +73,28 @@ class Parser:
                 tok = Token(val, TokenTypes.Number)
                 self.parsed.append(tok)
                 self.i += digit_end - 1
-            elif char == '#':
-                comment_end = after.index('\n')
-                self.i += comment_end
             elif char in self.code_page:
                 misc = None
-                if char == 'p':
+                if char == 'p' or char == 'ō':
                     string_end = after.index('`')
-                    self.parsed.append(after[1:string_end])
-                    self.pointer += string_end
-                elif char == 'ō':
-                    string_end = after.index('`')
-                    print(after[1:string_end])
-                    self.pointer += string_end
+                    self.parsed.append(Token(char, TokenTypes.Command))
+                    self.parsed.append(Token(after[1:string_end], TokenTypes.String))
+                    self.parsed.append(Token('`', TokenTypes.Command))
+                    self.i += string_end + 1
+                    continue
                 elif char == '{':
                     if_end = self.get_bounds(after, '{', '}')
-                    try:
-                        else_end = self.i + after.index(':')
-                    except:
-                        else_end = None
+                    else_end = self.get_bounds(after, '{', ':')
                     misc = {
                         "start": self.i,
-                        "else": else_end,
+                        "else": self.i + else_end,
                         "end": self.i + if_end
                     }
-                elif char == '}':
-                    for tok in self.parsed:
-                        if tok.type == TokenTypes.Command and tok.value == '{':
-                            if tok.misc['end'] == self.i:
-                                misc = {
-                                    "start": tok.misc["start"]
-                                }
+                elif char == ':':
+                    if_end = self.get_bounds(after, ':', '}')
+                    misc = {
+                        "end": self.i + if_end
+                    }
                 elif char == '(':
                     while_end = self.get_bounds(after, '(', ')')
                     misc = {
