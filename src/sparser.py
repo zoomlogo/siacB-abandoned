@@ -1,12 +1,11 @@
 from enum import Enum
 
 class TokenTypes(Enum):
-    Integer = 0
-    Float = 1
-    Array = 2
-    String = 4
+    Number = 0
+    Array = 1
+    String = 2
 
-    Command = 5
+    Command = 3
 
 class Token:
     def __init__(self, value, _type, misc=None):
@@ -19,8 +18,10 @@ class Parser:
         self.code = code
         self.i = 0
         self.parsed = []
-        self.NUMBERS = "0123456789."
-        self.code_page  = "_.,?"
+        self.once = False
+
+        self.NUMBERS = "0123456789.e"
+        self.code_page  = self.NUMBERS + "_.,?"
         self.code_page += "īēāūṭō"
         self.code_page += "p"
         self.code_page += "+-×÷²³½±"
@@ -38,8 +39,11 @@ class Parser:
 
             if char in self.NUMBERS:
                 digit_end = self.get_chars_bounds(after, self.NUMBERS)
-                val = int(self.code[self.i:self.i + digit_end])
-                tok = Token(val, TokenTypes.Integer)
+                try:
+                    val = int(self.code[self.i:self.i + digit_end])
+                except:
+                    val = float(self.code[self.i:self.i + digit_end])
+                tok = Token(val, TokenTypes.Number)
                 self.parsed.append(tok)
                 self.i += digit_end - 1
             elif char == '#':
@@ -90,6 +94,12 @@ class Parser:
                 self.parsed.append(tok)
 
             self.i += 1
+
+        if not ('ṭ' in self.code or 'ō' in self.code):
+            tok = Token('ṭ', TokenTypes.Command)
+            self.parsed.append(tok)
+
+
         return self.parsed
 
 

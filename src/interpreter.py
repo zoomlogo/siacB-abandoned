@@ -9,7 +9,7 @@ class Interpreter:
         # Stack operators
         if op == '_':
             self.memory_stack.append(len(self.memory_stack))
-        elif op == '.':
+        elif op == ';':
             self.memory_stack.append(self.memory_stack[-1])
         elif op == ',':
             self.memory_stack.pop()
