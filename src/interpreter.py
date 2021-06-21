@@ -87,16 +87,16 @@ class Interpreter:
         # Powers
         elif op.value == '²':
             if self.memory_stack[-1].type == Types.Number:
-                self.memory_stack[-1].value = self.memory_stack[-1] ** 2
+                self.memory_stack[-1].value = self.memory_stack[-1].value ** 2
         elif op.value == '³':
             if self.memory_stack[-1].type == Types.Number:
-                self.memory_stack[-1].value = self.memory_stack[-1] ** 3
+                self.memory_stack[-1].value = self.memory_stack[-1].value ** 3
         elif op.value == '√':
             if self.memory_stack[-1].type == Types.Number:
-                self.memory_stack[-1].value = self.memory_stack[-1] ** (1 / 2)
+                self.memory_stack[-1].value = self.memory_stack[-1].value ** (1 / 2)
         elif op.value == '∛':
             if self.memory_stack[-1].type == Types.Number:
-                self.memory_stack[-1].value = self.memory_stack[-1] ** (1 / 3)
+                self.memory_stack[-1].value = self.memory_stack[-1].value ** (1 / 3)
         # Fractions
         elif op.value == '½':
             if self.memory_stack[-1].type == Types.Number:
