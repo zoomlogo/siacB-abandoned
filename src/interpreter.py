@@ -11,6 +11,7 @@ class Interpreter:
         self.pointer = 0
         self.memory_stack = []
         self.auto_output = True
+        self.registor = 0
 
     def op_eval(self, op, before, after):
         # For logging
@@ -52,8 +53,8 @@ class Interpreter:
             self.memory_stack.append(obj)
         # Output
         elif op.value == 'ṭ':
-            self.auto_output = False
-            print(self.memory_stack.pop().value)
+            if self.memory_stack:
+                print(self.memory_stack.pop().value)
         elif op.value == 'ō':
             print(after[1].value)
             self.pointer += 2
@@ -65,6 +66,12 @@ class Interpreter:
             obj = Object(after[1].value, Types.String)
             self.memory_stack.append(obj)
             self.pointer += 2
+        # Registor push and copy
+        elif op.value == '©':
+            self.registor = self.memory_stack.pop()
+        elif op.value == '®':
+            if self.registor:
+                self.memory_stack.append(self.registor)
         # Arithmetic Operators
         elif op.value == '+':
             if self.memory_stack[-1].type == Types.Number:
