@@ -26,9 +26,10 @@ class Interpreter:
             print(self.memory_stack)
         # Input
         elif op.value == 'ī':
-            self.memory_stack.append(int(input('int: ')))
-        elif op.value == 'ē':
-            self.memory_stack.append(float(input('float: ')))
+            try:
+                self.memory_stack.append(int(input('number: ')))
+            except:
+                self.memory_stack.append(float(input('number: ')))
         elif op.value == 'ā':
             a = input('array<int>: ').split()
             a = [int(i) for i in a]
