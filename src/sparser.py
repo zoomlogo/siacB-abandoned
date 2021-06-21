@@ -91,6 +91,7 @@ class Parser:
         return self.parsed
 
     def post_parser(self):
+        # After parsing match parenthesis
         i = 0
         while i < len(self.parsed):
             tok = self.parsed[i]
@@ -147,35 +148,11 @@ class Parser:
 
         return end_index
 
-    def get_bounds(self, string, start, end):
-        # Get bounds defined by closing and opening chars which are different
-        is_bound = 0
-        found_start = False
-        start_index = None
-        end_index = None
-
-        i = 0
-        while i < len(string):
-            char = string[i]
-            if char == start:
-                if not found_start:
-                    found_start = True
-                    start_index = i
-                is_bound += 1
-            elif char == end:
-                is_bound -= 1
-                if is_bound == 0:
-                    end_index = i
-                    break
-            i += 1
-
-        return end_index
-
     def get_tok_bounds(self, tokens, start, end):
         # Get bounds defined by closing and opening chars which are different
+        # Token version
         is_bound = 0
         found_start = False
-        start_index = None
         end_index = None
 
         i = 0
@@ -185,7 +162,6 @@ class Parser:
             if char == start:
                 if not found_start:
                     found_start = True
-                    start_index = i
                 is_bound += 1
             elif char == end:
                 is_bound -= 1

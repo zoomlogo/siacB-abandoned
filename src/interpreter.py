@@ -10,6 +10,7 @@ class Interpreter:
         self.auto_output = True
 
     def op_eval(self, op, before, after):
+        # For logging
         if self.log is not None:
             self.log.write('Pointer: ' + str(self.pointer) + '\n')
             self.log.write('  ' + str(op) + '\n')
