@@ -1,6 +1,9 @@
 from sparser import TokenTypes
 from stypes import Types, Object
 
+import numpy as np
+import math
+
 class Interpreter:
     def __init__(self, tokens, logobj):
         self.tokens = tokens
@@ -107,10 +110,11 @@ class Interpreter:
         elif op.value == '¾':
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value *= 3 / 4
-        # Negate
-        elif op.value == '¼':
+        # Factorial
+        elif op.value == '!':
             if self.memory_stack[-1].type == Types.Number:
-                self.memory_stack[-1].value *= 1 / 4
+                self.memory_stack[-1].value = math.factorial(int(self.memory_stack[-1].value))
+        # Negate
         elif op.value == '±':
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value *= -1
