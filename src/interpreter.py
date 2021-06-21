@@ -20,7 +20,7 @@ class Interpreter:
             obj = Object(len(self.memory_stack), Types.Number)
             self.memory_stack.append(obj)
         elif op.value == ';':
-            self.memory_stack.append(self.memory_stack[-1])
+            self.memory_stack.append(self.memory_stack[-1].copy())
         elif op.value == ',':
             self.memory_stack.pop()
         elif op.value == '?':

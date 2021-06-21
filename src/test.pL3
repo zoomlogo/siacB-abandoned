@@ -1,1 +1,8 @@
-ī±∛
+ī(     # Take input (int) and start while loop
+  ;    # Duplicate the top of the stack
+  ³    # Cube the top of the stack
+  ±    # Negate the top of the stack
+  ½    # Half the top of the stack
+  ṭ    # Pop and print
+  -1   # Subtract one
+)      # End loop
