@@ -14,7 +14,7 @@ class Token:
         self.misc = misc
 
     def __str__(self):
-        return f"Value: {self.value}, Type: {self.type}, Misc: {self.misc}"
+        return f"Token({self.value}, {self.type}, {self.misc})"
 
 class Parser:
     def __init__(self, code):
@@ -116,7 +116,6 @@ class Parser:
         if not ('ṭ' in self.code or 'ō' in self.code):
             tok = Token('ṭ', TokenTypes.Command)
             self.parsed.append(tok)
-
 
         return self.parsed
 
