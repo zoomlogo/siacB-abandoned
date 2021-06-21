@@ -77,6 +77,12 @@ class Interpreter:
         elif op.value == '³':
             if isinstance(self.memory_stack[-1], int):
                 self.memory_stack[-1] = self.memory_stack[-1] ** 3
+        elif op.value == '√':
+            if isinstance(self.memory_stack[-1], int):
+                self.memory_stack[-1] = self.memory_stack[-1] ** (1 / 2)
+        elif op.value == '∛':
+            if isinstance(self.memory_stack[-1], int):
+                self.memory_stack[-1] = self.memory_stack[-1] ** (1 / 3)
         # Fractions
         elif op.value == '½':
             if isinstance(self.memory_stack[-1], int):
