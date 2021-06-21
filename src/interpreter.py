@@ -81,7 +81,16 @@ class Interpreter:
         elif op.value == '½':
             if isinstance(self.memory_stack[-1], int):
                 self.memory_stack[-1] *= 1 / 2
+        elif op.value == '¼':
+            if isinstance(self.memory_stack[-1], int):
+                self.memory_stack[-1] *= 1 / 4
+        elif op.value == '¾':
+            if isinstance(self.memory_stack[-1], int):
+                self.memory_stack[-1] *= 3 / 4
         # Negate
+        elif op.value == '¼':
+            if isinstance(self.memory_stack[-1], int):
+                self.memory_stack[-1] *= 1 / 4
         elif op.value == '±':
             if isinstance(self.memory_stack[-1], int):
                 self.memory_stack[-1] *= -1
