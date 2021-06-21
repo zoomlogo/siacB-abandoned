@@ -11,7 +11,7 @@ class Interpreter:
 
     def op_eval(self, op, before, after):
         if self.log is not None:
-            self.log.write(str(self.pointer) + '\n')
+            self.log.write('Pointer: ' + str(self.pointer) + '\n')
             self.log.write('  ' + str(op) + '\n')
             self.log.write('  ' + str(self.memory_stack) + '\n')
         # Stack operators

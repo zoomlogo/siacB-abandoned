@@ -17,7 +17,10 @@ class Token:
         self.misc = misc
 
     def __str__(self):
-        return f"Token({self.value}, {self.type}, {self.misc})"
+        val_str = self.value
+        if self.type != TokenTypes.Number:
+            val_str = "'" + self.value + "'"
+        return f"Token({val_str}, {self.type}, {self.misc})"
 
 class Parser:
     def __init__(self, code):
@@ -27,15 +30,6 @@ class Parser:
         self.once = False
 
         self.NUMBERS = "0123456789.e"
-        self.code_page  = self.NUMBERS + "_;,?"
-        self.code_page += "īēāūṭō"
-        self.code_page += "p"
-        self.code_page += "+-×÷²³½±"
-        self.code_page += "=≠>≥<≤"
-        self.code_page += "{:}"
-        self.code_page += "()"
-
-        assert len(self.code_page) <= 256
 
         self.pre_parse()
 
