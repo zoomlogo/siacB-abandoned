@@ -22,12 +22,12 @@ pHello, World!`
 
 #### While loop
 ```
-ī(.ṭ-1)
+ī(;ṭ-1)
 ```
 With explanation (another version)
 ```
 ī(     # Take input (int) and start while loop
-  .    # Duplicate the top of the stack
+  ;    # Duplicate the top of the stack
   ³    # Cube the top of the stack
   ±    # Negate the top of the stack
   ½    # Half the top of the stack
