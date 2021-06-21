@@ -28,7 +28,7 @@ class Interpreter:
             self.memory_stack.pop()
         elif op.value == '?':
             for obj in self.memory_stack:
-                print(end=obj.value)
+                print(end=str(obj.value))
             print()
         # Input
         elif op.value == 'ī':
@@ -61,7 +61,6 @@ class Interpreter:
         elif op.type == TokenTypes.Number:
             obj = Object(op.value, Types.Number)
             self.memory_stack.append(obj)
-            self.pointer += 1
         elif op.value == 'p':
             obj = Object(after[1].value, Types.String)
             self.memory_stack.append(obj)
@@ -72,21 +71,33 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value += after[1].value
                     self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value += obj2.value
         elif op.value == '-':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value -= after[1].value
                     self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value -= obj2.value
         elif op.value == '×':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value *= after[1].value
                     self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value *= obj2.value
         elif op.value == '÷':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value /= after[1].value
                     self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value /= obj2.value
         # Powers
         elif op.value == '²':
             if self.memory_stack[-1].type == Types.Number:
@@ -124,31 +135,49 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = self.memory_stack[-1].value == after[1].value
                     self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = self.memory_stack[-1].value == obj2.value
         elif op.value == '≠':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = self.memory_stack[-1].value != after[1].value
                     self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = self.memory_stack[-1].value != obj2.value
         elif op.value == '>':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = self.memory_stack[-1].value > after[1].value
                     self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = self.memory_stack[-1].value > obj2.value
         elif op.value == '<':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = self.memory_stack[-1].value < after[1].value
                     self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = self.memory_stack[-1].value < obj2.value
         elif op.value == '≤':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = self.memory_stack[-1].value <= after[1].value
                     self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = self.memory_stack[-1].value <= obj2.value
         elif op.value == '≥':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = self.memory_stack[-1].value >= after[1].value
                     self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = self.memory_stack[-1].value >= obj2.value
         # If statements
         elif op.value == '{':
             popped = self.memory_stack.pop()
