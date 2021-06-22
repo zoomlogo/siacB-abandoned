@@ -128,10 +128,30 @@ class Interpreter:
         elif op.value == '¾':
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value *= 3 / 4
-        # Factorial
-        elif op.value == '!':
-            if self.memory_stack[-1].type == Types.Number:
-                self.memory_stack[-1].value = math.factorial(int(self.memory_stack[-1].value))
+        # Math
+        elif op.value == 'm':
+            if after[1].value == '!':
+                if self.memory_stack[-1].type == Types.Number:
+                    self.memory_stack[-1].value = math.factorial(int(self.memory_stack[-1].value))
+            elif after[1].value == 's':
+                if self.memory_stack[-1].type == Types.Number:
+                    self.memory_stack[-1].value = math.sin(self.memory_stack[-1].value)
+            elif after[1].value == 'S':
+                if self.memory_stack[-1].type == Types.Number:
+                    self.memory_stack[-1].value = math.asin(self.memory_stack[-1].value)
+            elif after[1].value == 'c':
+                if self.memory_stack[-1].type == Types.Number:
+                    self.memory_stack[-1].value = math.cos(self.memory_stack[-1].value)
+            elif after[1].value == 'C':
+                if self.memory_stack[-1].type == Types.Number:
+                    self.memory_stack[-1].value = math.acos(self.memory_stack[-1].value)
+            elif after[1].value == 't':
+                if self.memory_stack[-1].type == Types.Number:
+                    self.memory_stack[-1].value = math.tan(self.memory_stack[-1].value)
+            elif after[1].value == 'T':
+                if self.memory_stack[-1].type == Types.Number:
+                    self.memory_stack[-1].value = math.atan(self.memory_stack[-1].value)
+            self.pointer += 1
         # Negate
         elif op.value == '±':
             if self.memory_stack[-1].type == Types.Number:
