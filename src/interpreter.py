@@ -163,6 +163,10 @@ class Interpreter:
         elif op.value == '⊤':
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value = int(self.memory_stack[-1].value) + 1
+        # ABS
+        elif op.value == '⊢':
+            if self.memory_stack[-1].type == Types.Number:
+                self.memory_stack[-1].value = abs(self.memory_stack[-1].value)
         # Comparision operators
         elif op.value == '=':
             if self.memory_stack[-1].type == Types.Number:
