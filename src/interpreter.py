@@ -45,11 +45,8 @@ class Interpreter:
                 obj = Object(float(val), Types.Number)
                 self.memory_stack.append(obj)
         elif op.value == 'ā':
-            a = input('array<number>: ').split()
-            try:
-                a = [int(i) for i in a]
-            except:
-                a = [float(i) for i in a]
+            a = input('array<number>: ')
+            a = np.array(eval(a))
             obj = Object(a, Types.Array)
             self.memory_stack.append(obj)
         elif op.value == 'ū':

@@ -16,6 +16,6 @@ class Object:
     def __str__(self):
         val_str = self.value
         if self.type != Types.Number:
-            val_str = "'" + self.value + "'"
+            val_str = "'" + str(self.value) + "'"
         return f"Object({val_str}, {self.type})"
 
