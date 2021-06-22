@@ -18,7 +18,11 @@ class Interpreter:
         if self.log is not None:
             self.log.write('Pointer: ' + str(self.pointer) + '\n')
             self.log.write('  ' + str(op) + '\n')
-            self.log.write('  ' + str(self.memory_stack) + '\n')
+            self.log.write('  [ ')
+            for obj in self.memory_stack:
+                self.log.write(str(obj) + ' ')
+            self.log.write(']\n')
+            self.log.write('  ' + str(self.registor) + '\n')
         # Stack operators
         if op.value == '_':
             obj = Object(len(self.memory_stack), Types.Number)
@@ -81,6 +85,9 @@ class Interpreter:
                 else:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value += obj2.value
+            elif self.memory_stack[-1].type == Types.String:
+                obj2 = self.memory_stack.pop()
+                self.memory_stack[-1].value += str(obj2.value)
         elif op.value == '-':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
@@ -97,6 +104,9 @@ class Interpreter:
                 else:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value *= obj2.value
+            elif self.memory_stack[-1].type == Types.String:
+                obj2 = self.memory_stack.pop()
+                self.memory_stack[-1].value *= obj2.value
         elif op.value == '÷':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
