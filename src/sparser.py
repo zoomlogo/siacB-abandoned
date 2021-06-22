@@ -46,6 +46,7 @@ class Parser:
             elif c == 'p' or c == 'ō':
                 string_end = after.index('`')
                 res += after[:string_end]
+                res += '`'
                 i += string_end
             elif c == ' ' or c == '\n' or c == '\t':
                 pass
