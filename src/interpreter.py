@@ -156,6 +156,13 @@ class Interpreter:
         elif op.value == '±':
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value *= -1
+        # Floor and ceil
+        elif op.value == '⊥':
+            if self.memory_stack[-1].type == Types.Number:
+                self.memory_stack[-1].value = int(self.memory_stack[-1].value)
+        elif op.value == '⊤':
+            if self.memory_stack[-1].type == Types.Number:
+                self.memory_stack[-1].value = int(self.memory_stack[-1].value) + 1
         # Comparision operators
         elif op.value == '=':
             if self.memory_stack[-1].type == Types.Number:
