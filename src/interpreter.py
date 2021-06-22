@@ -105,6 +105,18 @@ class Interpreter:
                 else:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value /= obj2.value
+        # Logical operators
+        elif op.value == '&':
+            if self.memory_stack[-1].type == Types.Number:
+                obj2 = self.memory_stack.pop()
+                self.memory_stack[-1].value = self.memory_stack[-1].value and obj2.value
+        elif op.value == '|':
+            if self.memory_stack[-1].type == Types.Number:
+                obj2 = self.memory_stack.pop()
+                self.memory_stack[-1].value = self.memory_stack[-1].value or obj2.value
+        elif op.value == '!':
+            if self.memory_stack[-1].type == Types.Number:
+                self.memory_stack[-1].value = not self.memory_stack[-1].value
         # Powers
         elif op.value == '²':
             if self.memory_stack[-1].type == Types.Number:
