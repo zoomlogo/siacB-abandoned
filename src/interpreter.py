@@ -248,6 +248,13 @@ class Interpreter:
         elif op.value == '⊢':
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value = abs(self.memory_stack[-1].value)
+        # number -> string and vice versa
+        elif op.value == 's':
+            if self.memory_stack[-1].type == Types.Number:
+                self.memory_stack[-1] = Object(chr(self.memory_stack[-1].value), Types.String)
+        elif op.value == 'S':
+            if self.memory_stack[-1].type == Types.String and len(self.memory_stack[-1].value) == 1:
+                self.memory_stack[-1] = Object(ord(self.memory_stack[-1].value), Types.Number)
         # Comparision operators
         elif op.value == '=':
             if self.memory_stack[-1].type == Types.Number:
