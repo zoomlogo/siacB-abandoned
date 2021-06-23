@@ -79,7 +79,7 @@ class Interpreter:
                 self.memory_stack.append(self.registor)
         # Arithmetic Operators
         elif op.value == '+':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value += after[1].value
                     self.pointer += 1
@@ -90,7 +90,7 @@ class Interpreter:
                 obj2 = self.memory_stack.pop()
                 self.memory_stack[-1].value += str(obj2.value)
         elif op.value == '-':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value -= after[1].value
                     self.pointer += 1
@@ -98,7 +98,7 @@ class Interpreter:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value -= obj2.value
         elif op.value == '×':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value *= after[1].value
                     self.pointer += 1
@@ -109,7 +109,7 @@ class Interpreter:
                 obj2 = self.memory_stack.pop()
                 self.memory_stack[-1].value *= obj2.value
         elif op.value == '÷':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value /= after[1].value
                     self.pointer += 1
@@ -162,26 +162,26 @@ class Interpreter:
                 self.memory_stack[-1].value = 1 if not self.memory_stack[-1].value else 0
         # Powers
         elif op.value == '²':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 self.memory_stack[-1].value = self.memory_stack[-1].value ** 2
         elif op.value == '³':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 self.memory_stack[-1].value = self.memory_stack[-1].value ** 3
         elif op.value == '√':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 self.memory_stack[-1].value = self.memory_stack[-1].value ** (1 / 2)
         elif op.value == '∛':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 self.memory_stack[-1].value = self.memory_stack[-1].value ** (1 / 3)
         # Fractions
         elif op.value == '½':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 self.memory_stack[-1].value *= 1 / 2
         elif op.value == '¼':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 self.memory_stack[-1].value *= 1 / 4
         elif op.value == '¾':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 self.memory_stack[-1].value *= 3 / 4
         # Math
         elif op.value == 'm':
