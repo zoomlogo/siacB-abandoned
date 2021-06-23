@@ -214,6 +214,25 @@ class Interpreter:
                 if self.memory_stack[-1].type == Types.Number:
                     self.memory_stack[-1].value = math.log(self.memory_stack[-1])
             self.pointer += 1
+        # Range
+        elif op.value == 'r':
+            if self.memory_stack[-1].type == Types.Number:
+                obj = self.memory_stack.pop()
+                obj = Object(np.array(range(obj.value)), Types.Array)
+                self.memory_stack.append(obj)
+        # Array T
+        elif op.value == 'T':
+            if self.memory_stack[-1].type == Types.Array:
+                self.memory_stack[-1].value = self.memory_stack[-1].value.T
+        # Array rot90
+        elif op.value == 'R':
+            if self.memory_stack[-1].type == Types.Array:
+                self.memory_stack[-1].vale = np.rot90(self.memory_stack[-1].value)
+        # Pair
+        elif op.value == '"':
+            obj1, obj2 = self.memory_stack.pop(), self.memory_stack.pop()
+            obj = Object(np.array([obj1.value, obj2.value], dtype=object), Types.Array)
+            self.memory_stack.append(obj)
         # Negate
         elif op.value == '±':
             if self.memory_stack[-1].type == Types.Number:
