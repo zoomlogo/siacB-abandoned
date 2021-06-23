@@ -48,6 +48,10 @@ class Parser:
                 res += after[:string_end]
                 res += '`'
                 i += string_end
+            elif c == '\\':
+                res += c
+                res += after[1]
+                i += 1
             elif c == ' ' or c == '\n' or c == '\t':
                 pass
             else:
@@ -77,6 +81,10 @@ class Parser:
                 self.parsed.append(Token(after[1:string_end], TokenTypes.String))
                 self.parsed.append(Token('`', TokenTypes.Command))
                 self.i += string_end
+            elif char == '\\':
+                self.parsed.append(Token(char, TokenTypes.Command))
+                self.parsed.append(Token(after[1], TokenTypes.String))
+                self.i += 1
             else:
                 tok = Token(char, TokenTypes.Command)
                 self.parsed.append(tok)

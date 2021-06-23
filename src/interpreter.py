@@ -67,6 +67,10 @@ class Interpreter:
             obj = Object(after[1].value, Types.String)
             self.memory_stack.append(obj)
             self.pointer += 2
+        elif op.value == '\\':
+            obj = Object(after[1].value, Types.String)
+            self.memory_stack.append(obj)
+            self.pointer += 1
         # Registor push and copy
         elif op.value == '©':
             self.registor = self.memory_stack.pop()
