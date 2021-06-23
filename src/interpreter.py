@@ -206,6 +206,13 @@ class Interpreter:
             elif after[1].value == 'T':
                 if self.memory_stack[-1].type == Types.Number:
                     self.memory_stack[-1].value = math.atan(self.memory_stack[-1].value)
+            elif after[1].value == 'l':
+                if self.memory_stack[-1].type == Types.Number:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = math.log(self.memory_stack[-1].value, obj2.value)
+            elif after[1].value == 'L':
+                if self.memory_stack[-1].type == Types.Number:
+                    self.memory_stack[-1].value = math.log(self.memory_stack[-1])
             self.pointer += 1
         # Negate
         elif op.value == '±':
