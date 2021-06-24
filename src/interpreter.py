@@ -33,7 +33,7 @@ class Interpreter:
             self.memory_stack.pop()
         elif op.value == '?':
             for obj in self.memory_stack:
-                print(end=str(obj.value))
+                print(end=str(obj.value) + ' ')
             print()
         # Input
         elif op.value == 'ī':
@@ -255,6 +255,20 @@ class Interpreter:
         elif op.value == 'S':
             if self.memory_stack[-1].type == Types.String and len(self.memory_stack[-1].value) == 1:
                 self.memory_stack[-1] = Object(ord(self.memory_stack[-1].value), Types.Number)
+        # (Un)Wrapping
+        elif op.value == 'W':
+            stack = self.memory_stack[:]
+            i = 0
+            while i < len(stack):
+                stack[i] = stack[i].value
+                i += 1
+            self.memory_stack = []
+            self.memory_stack.append(Object(np.array(stack, dtype=object), Types.Array))
+        elif op.value == 'U':
+            popped = self.memory_stack.pop()
+            if popped.type == Types.Array:
+                for v in popped.value:
+                    self.memory_stack.append(Object(v, Types.Number))
         # Comparision operators
         elif op.value == '=':
             if self.memory_stack[-1].type == Types.Number:
