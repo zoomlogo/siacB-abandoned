@@ -341,7 +341,7 @@ class Interpreter:
         elif op.value == ':':
             # Jump to '}'
             self.pointer = op.misc["end"]
-        elif op.value == '¿':
+        elif op.value == '⁇':
             if self.memory_stack[-1].value:
                 pass
             else:
