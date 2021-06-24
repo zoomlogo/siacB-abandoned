@@ -7,13 +7,19 @@ import math
 class Interpreter:
     def __init__(self, tokens, logobj):
         self.tokens = tokens
-        self.log = logobj
         self.pointer = 0
-        self.memory_stack = []
-        self.auto_output = True
         self.registor = 0
+        self.memory_stack = []
+        self.log = logobj
+
+        self.for_each_i = 0
+        self.for_each_popped = None
 
     def op_eval(self, op, before, after):
+        # For each reset
+        if len(before) > 0 and before[-1].value == '⁆':
+            self.for_each_i = 0
+            self.for_each_popped = None
         # For logging
         if self.log is not None:
             self.log.write('Pointer: ' + str(self.pointer) + '\n')
@@ -358,6 +364,18 @@ class Interpreter:
             else:
                 self.pointer = op.misc["end"]
         elif op.value == ')':
+            self.pointer = op.misc["start"] - 1
+        # For each
+        elif op.value == '⁅':
+            if self.for_each_popped is None:
+                self.for_each_popped = self.memory_stack.pop()
+            else:
+                if self.for_each_i < len(self.for_each_popped.value):
+                    self.memory_stack.append(Object(self.for_each_popped.value[self.for_each_i], Types.Number))
+                    self.for_each_i += 1
+                else:
+                    self.pointer = op.misc["end"]
+        elif op.value == '⁆':
             self.pointer = op.misc["start"] - 1
 
     def run(self):
