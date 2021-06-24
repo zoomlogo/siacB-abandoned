@@ -369,6 +369,8 @@ class Interpreter:
         elif op.value == '⁅':
             if self.for_each_popped is None:
                 self.for_each_popped = self.memory_stack.pop()
+                self.memory_stack.append(Object(self.for_each_popped.value[self.for_each_i], Types.Number))
+                self.for_each_i += 1
             else:
                 if self.for_each_i < len(self.for_each_popped.value):
                     self.memory_stack.append(Object(self.for_each_popped.value[self.for_each_i], Types.Number))
