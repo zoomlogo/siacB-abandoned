@@ -40,6 +40,10 @@ class Interpreter:
         elif op.value == '$':
             self.memory_stack.append(self.memory_stack[-2].copy())
             self.memory_stack.append(self.memory_stack[-2].copy())
+        elif op.value == '\'':
+            tmp = self.memory_stack[-2].copy()
+            self.memory_stack[-2] = self.memory_stack[-1].copy()
+            self.memory_stack[-1] = tmp
         # Input
         elif op.value == 'ī':
             val = input('number: ')
