@@ -37,6 +37,9 @@ class Interpreter:
             print()
         elif op.value == '*':
             self.memory_stack = self.memory_stack[::-1]
+        elif op.value == '$':
+            self.memory_stack.append(self.memory_stack[-2].copy())
+            self.memory_stack.append(self.memory_stack[-2].copy())
         # Input
         elif op.value == 'ī':
             val = input('number: ')
