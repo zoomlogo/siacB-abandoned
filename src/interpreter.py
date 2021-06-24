@@ -298,6 +298,10 @@ class Interpreter:
                 else:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value == obj2.value else 0
+            elif self.memory_stack[-1].type == Types.Array:
+                if self.memory_stack[-2].type == Types.Array:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1] = Object(1 if np.array_equal(self.memory_stack[-1].value, obj2.value) else 0, Types.Number)
         elif op.value == '≠':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
