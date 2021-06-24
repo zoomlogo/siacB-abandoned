@@ -154,6 +154,8 @@ class Parser:
                     end_index = i
                     break
             i += 1
+        else:
+            end_index = i
 
         return end_index
 
