@@ -278,6 +278,11 @@ class Interpreter:
             if popped.type == Types.Array:
                 for v in popped.value:
                     self.memory_stack.append(Object(v, Types.Number))
+        # Belongs to
+        elif op.value == 'c':
+            if self.memory_stack[-1].type == Types.Array:
+                obj = Object(1 if self.memory_stack[-2].value in self.memory_stack[-1].value else 0, Types.Number)
+                self.memory_stack.append(obj)
         # Comparision operators
         elif op.value == '=':
             if self.memory_stack[-1].type == Types.Number:
