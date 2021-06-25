@@ -190,8 +190,19 @@ class Interpreter:
                 self.memory_stack[-1].value = self.memory_stack[-1].value ** (1 / 3)
         # Fractions
         elif op.value == '½':
-            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
+            if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value *= 1 / 2
+            elif self.memory_stack[-1].type == Types.Array:
+                popped = self.memory_stack.pop()
+                arrlis = np.array_split(popped.value, 2)
+                for arr in arrlis:
+                    self.memory_stack.append(Object(arr, Types.Array))
+            elif self.memory_stack[-1].type == Types.String:
+                popped = self.memory_stack.pop()
+                half = int(len(popped.value) / 2)
+                parts = [popped.value[:half], popped.value[half:]]
+                for p in parts:
+                    self.memory_stack.append(Object(p, Types.String))
         elif op.value == '¼':
             if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 self.memory_stack[-1].value *= 1 / 4
