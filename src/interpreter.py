@@ -244,16 +244,13 @@ class Interpreter:
         elif op.value == 'r':
             if self.memory_stack[-1].type == Types.Number:
                 obj = self.memory_stack.pop()
-                obj = Object(np.array(range(obj.value)), Types.Array)
+                obj = Object(np.arange(obj.value), Types.Array)
                 self.memory_stack.append(obj)
-        # Array T
-        elif op.value == 'T':
-            if self.memory_stack[-1].type == Types.Array:
-                self.memory_stack[-1].value = self.memory_stack[-1].value.T
-        # Array rot90
         elif op.value == 'R':
-            if self.memory_stack[-1].type == Types.Array:
-                self.memory_stack[-1].vale = np.rot90(self.memory_stack[-1].value)
+            if self.memory_stack[-1].type == Types.Number:
+                obj = self.memory_stack.pop()
+                obj = Object(np.arange(1, obj.value + 1), Types.Array)
+                self.memory_stack.append(obj)
         # Pair
         elif op.value == '"':
             obj1, obj2 = self.memory_stack.pop(), self.memory_stack.pop()
@@ -270,6 +267,16 @@ class Interpreter:
         elif op.value == '⊤':
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value = int(self.memory_stack[-1].value) + 1
+        # Array operators
+        elif op.value == 'A':
+            if self.memory_stack[-1].type == Types.Array:
+                if after[1].value == 'S':
+                    self.memory_stack[-1].value = np.sort(self.memory_stack[-1].value)
+                elif after[1].value == 'T':
+                    self.memory_stack[-1].value = self.memory_stack[-1].value.T
+                elif after[1].value == 'R':
+                    self.memory_stack[-1].vale = np.rot90(self.memory_stack[-1].value)
+            self.pointer += 1
         # ABS
         elif op.value == '⊢':
             if self.memory_stack[-1].type == Types.Number:
