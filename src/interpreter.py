@@ -268,8 +268,15 @@ class Interpreter:
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1] = Object(chr(self.memory_stack[-1].value), Types.String)
         elif op.value == 'S':
-            if self.memory_stack[-1].type == Types.String and len(self.memory_stack[-1].value) == 1:
-                self.memory_stack[-1] = Object(ord(self.memory_stack[-1].value), Types.Number)
+            if self.memory_stack[-1].type:
+                if len(self.memory_stack[-1].value) == 1:
+                    self.memory_stack[-1] = Object(ord(self.memory_stack[-1].value), Types.Number)
+                else:
+                    self.memory_stack[-1] = Object([ord(c) for c in self.memory_stack[-1].value], Types.Array)
+        elif op.value == 'B':
+            if self.memory_stack[-1].type == Types.Number:
+                val = np.array([i for i in map(int, bin(self.memory_stack[-1].value)[2:])])
+                self.memory_stack[-1] = Object(val, Types.Array)
         # (Un)Wrapping
         elif op.value == 'W':
             stack = self.memory_stack[:]
@@ -280,8 +287,8 @@ class Interpreter:
             self.memory_stack = []
             self.memory_stack.append(Object(np.array(stack, dtype=object), Types.Array))
         elif op.value == 'U':
-            popped = self.memory_stack.pop()
-            if popped.type == Types.Array:
+            if self.memory_stack[-1].type == Types.Array:
+                popped = self.memory_stack.pop()
                 for v in popped.value:
                     self.memory_stack.append(Object(v, Types.Number))
         # Belongs to
