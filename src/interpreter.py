@@ -412,7 +412,7 @@ class Interpreter:
                     self.for_each_i += 1
                 else:
                     self.pointer = op.misc["end"]
-        elif op.value == '⁆':
+        elif op.value == '⁆⁆':
             self.pointer = op.misc["start"] - 1
 
     def run(self):
