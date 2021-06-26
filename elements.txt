@@ -1,0 +1,15 @@
+Command     Arity
+‐------     -----
+<Space>               Nothing
+<Newline>             Nothing
+_                     Push len(stack)
+;           1         Duplicate top of stack
+!           1         Pop/Remove/Discard top of stack
+?                     Print stack joined by space
+*                     Reverse stack
+$           1         Triplicate (Pop one, Push 3 copies) of top of stack
+\           2         Swap top two items on stack
+ī                     Input a number and push to stack
+ā                     Input array and push to stack
+ū                     Input string and push to stack
+ṭ           1         Pop top of stack and print with a trailing newline
