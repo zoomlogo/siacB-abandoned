@@ -4,9 +4,9 @@
 2_  ;  |  \  /  .  ,  >  <  ?  A  B  C  D  E  F  G
 3_  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W
 4_  X  Y  Z  a  b  c  d  e  f  g  h  i  j  k  l  m
-5_  n  o  p  q  r  t  u  v  w  x  y  z  ā  ī  ō  ū
-6_  ṭ  ©  ®  ×  ÷  »  «  ∧  ∨  ¬  ²  ³  √  ∛  ½  ¼
-7_  ¾  ±  ⊥  ⊤  ⊢  ≠  ≤  ≥  ⁇  ⁅  ⁆
+5_  n  o  p  q  r  t  u  v  w  x  y  z  ī  ō  ṭ  ©
+6_  ®  ×  ÷  »  «  ∧  ∨  ¬  ²  ³  √  ∛  ½  ¼  ¾  ±
+7_  ⊥  ⊤  ⊢  ≠  ≤  ≥  ⁇  ⁅  ⁆
 8_
 9_
 a_
