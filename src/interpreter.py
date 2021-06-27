@@ -131,6 +131,14 @@ class Interpreter:
                 else:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value /= obj2.value
+        elif op.value == '%':
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
+                if after[1].type == TokenTypes.Number:
+                    self.memory_stack[-1].value = after.memory_stack[-1].value % after[1].value
+                    self.pointer += 1
+                else:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = self.memory_stack[-1].value % obj2.value
         # Bitwise operators
         elif op.value == '»':
             if self.memory_stack[-1].type == Types.Number:
