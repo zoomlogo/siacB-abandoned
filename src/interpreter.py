@@ -52,21 +52,21 @@ class Interpreter:
             self.memory_stack[-1] = tmp
         # Input
         elif op.value == 'ī':
-            val = input('number: ')
+            val = input()
             try:
                 obj = Object(int(val), Types.Number)
                 self.memory_stack.append(obj)
             except:
-                obj = Object(float(val), Types.Number)
-                self.memory_stack.append(obj)
-        elif op.value == 'ā':
-            a = input('array<number>: ')
-            a = np.array(eval(a))
-            obj = Object(a, Types.Array)
-            self.memory_stack.append(obj)
-        elif op.value == 'ū':
-            obj = Object(input("string: "), Types.String)
-            self.memory_stack.append(obj)
+                try:
+                    obj = Object(float(val), Types.Number)
+                    self.memory_stack.append(obj)
+                except:
+                    try:
+                        obj = Object(np.array(eval(val)), Types.Array)
+                        self.memory_stack.append(obj)
+                    except:
+                        obj = Object(val, Types.String)
+                        self.memory_stack.append(obj)
         # Output
         elif op.value == 'ṭ':
             if self.memory_stack:
