@@ -2,7 +2,6 @@ from sparser import TokenTypes
 from stypes import Types, Object
 
 import numpy as np
-import math
 
 class Interpreter:
     def __init__(self, tokens, logobj):
@@ -221,32 +220,31 @@ class Interpreter:
         elif op.value == 'm':
             if after[1].value == '!':
                 if self.memory_stack[-1].type == Types.Number:
-                    self.memory_stack[-1].value = math.factorial(int(self.memory_stack[-1].value))
+                    self.memory_stack[-1].value = np.math.factorial(int(self.memory_stack[-1].value))
             elif after[1].value == 's':
-                if self.memory_stack[-1].type == Types.Number:
-                    self.memory_stack[-1].value = math.sin(self.memory_stack[-1].value)
+                if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
+                    self.memory_stack[-1].value = np.sin(self.memory_stack[-1].value)
             elif after[1].value == 'S':
-                if self.memory_stack[-1].type == Types.Number:
-                    self.memory_stack[-1].value = math.asin(self.memory_stack[-1].value)
+                if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
+                    self.memory_stack[-1].value = np.asin(self.memory_stack[-1].value)
             elif after[1].value == 'c':
-                if self.memory_stack[-1].type == Types.Number:
-                    self.memory_stack[-1].value = math.cos(self.memory_stack[-1].value)
+                if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
+                    self.memory_stack[-1].value = np.cos(self.memory_stack[-1].value)
             elif after[1].value == 'C':
-                if self.memory_stack[-1].type == Types.Number:
-                    self.memory_stack[-1].value = math.acos(self.memory_stack[-1].value)
+                if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
+                    self.memory_stack[-1].value = np.acos(self.memory_stack[-1].value)
             elif after[1].value == 't':
-                if self.memory_stack[-1].type == Types.Number:
-                    self.memory_stack[-1].value = math.tan(self.memory_stack[-1].value)
+                if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
+                    self.memory_stack[-1].value = np.tan(self.memory_stack[-1].value)
             elif after[1].value == 'T':
-                if self.memory_stack[-1].type == Types.Number:
-                    self.memory_stack[-1].value = math.atan(self.memory_stack[-1].value)
+                if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
+                    self.memory_stack[-1].value = np.atan(self.memory_stack[-1].value)
             elif after[1].value == 'l':
-                if self.memory_stack[-1].type == Types.Number:
-                    obj2 = self.memory_stack.pop()
-                    self.memory_stack[-1].value = math.log(self.memory_stack[-1].value, obj2.value)
+                if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
+                    self.memory_stack[-1].value = np.log10(self.memory_stack[-1].value)
             elif after[1].value == 'L':
-                if self.memory_stack[-1].type == Types.Number:
-                    self.memory_stack[-1].value = math.log(self.memory_stack[-1])
+                if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
+                    self.memory_stack[-1].value = np.log(self.memory_stack[-1])
             self.pointer += 1
         # Range
         elif op.value == 'r':
