@@ -283,7 +283,9 @@ class Interpreter:
                 elif after[1].value == 'T':
                     self.memory_stack[-1].value = self.memory_stack[-1].value.T
                 elif after[1].value == 'R':
-                    self.memory_stack[-1].vale = np.rot90(self.memory_stack[-1].value)
+                    self.memory_stack[-1].value = np.rot90(self.memory_stack[-1].value)
+                elif after[1].value == 'F':
+                    self.memory_stack[-1].value = self.memory_stack[-1].value.flatten()
             self.pointer += 1
         # ABS
         elif op.value == '⊢':
