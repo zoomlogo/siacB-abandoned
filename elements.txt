@@ -24,3 +24,73 @@ p                     Push the string ended by `
 %           2/1       modulo top 2 elements or modulo top to the next element
 »           2/1       bitshift left
 «           2/1       bitshift right
+&           2         Bitwise and
+|           2         Bitwise or
+^           2         Bitwise xor
+!           1         Bitwise not
+∧           2         Logical and
+∨           2         Logical or
+¬           1         Logical not
+²           1         Raise to power of 2
+³           1         Raise to power of 3
+√           1         Square root
+∛           1         Cube root
+½           1         Half the number or half the array or half the string
+¼           1         A quaters
+¾           1         Three quaters
+m                     Math functions
+ms          1         Sin
+mS          1         Arcsin
+mc          1         Cos
+mC          1         Arccos
+mt          1         Tan
+mT          1         Arctan
+m!          1         Factorial
+ml          1         log10
+mL          1         natural log
+k                     Constants
+k1                    1000
+k2                    10000
+k3                    100000
+kA                    ABCDEFGHIJKLMNOPQRSTUVWXYZ
+ka                    abcdefghijklmnopqrstuvwxyz
+ke                    Euler's number
+kH                    Hello, World!
+kp                    Pi
+ks                    Current second
+km                    Current microsecond
+kM                    Current minute
+kw                    www
+l           1         Length of array / string
+r           1         Range from 0..n (exclusive)
+R           1         Range from 1..n (inclusive)
+"           2         Form a pair using top 2 elements
+±           1         Negate
+⊥           1         Floor
+⊤           1         Ceil
+A                     Array operators
+AS          1         Sort
+AT          1         Transpose
+AR          1         Rotate
+AF          1         Flatten
+⊢           1         Abs
+s           1         Convert number to unicode char
+S           1         Convert char / string to number / array
+B           1         Convert number to binary (array)
+W           *         Convert the entire stack into an array
+U           1         Unwrap the array onto the stack
+c           2         Belongs to
+=           1/2       Equals to
+>           1/2       Greater than
+<           1/2       Less than
+≠           1/2       Not equal to
+≥           1/2       Greater than or equal to
+≤           1/2       Less than or equal to
+{           1         If begin
+:                     If else
+}                     If end
+⁇           1         If then next command else skip
+(           1         While
+)                     While end
+⁅           1         For each
+⁆                     For each end
