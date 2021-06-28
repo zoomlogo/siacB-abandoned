@@ -2,6 +2,7 @@ from sparser import TokenTypes
 from stypes import Types, Object
 
 import numpy as np
+from datetime import datetime
 
 class Interpreter:
     def __init__(self, tokens, logobj):
@@ -246,6 +247,50 @@ class Interpreter:
                 if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                     self.memory_stack[-1].value = np.log(self.memory_stack[-1])
             self.pointer += 1
+        # Constants
+        elif op.value == 'k':
+            if after[1].value == '1':
+                obj = Object(10 ** 3, Types.Number)
+                self.memory_stack.append(obj)
+            elif after[1].value == '2':
+                obj = Object(10 ** 4, Types.Number)
+                self.memory_stack.append(obj)
+            elif after[1].value == '3':
+                obj = Object(10 ** 5, Types.Number)
+                self.memory_stack.append(obj)
+            elif after[1].value == 'A':
+                obj = Object("ABCDEFGHIJKLMNOPQRSTUVWXYZ", Types.String)
+                self.memory_stack.append(obj)
+            elif after[1].value == 'a':
+                obj = Object("abcdefghijklmnopqrstuvwxyz", Types.String)
+                self.memory_stack.append(obj)
+            elif after[1].value == 'e':
+                obj = Object(np.e, Types.Number)
+                self.memory_stack.append(obj)
+            elif after[1].value == 'H':
+                obj = Object("Hello, World!", Types.String)
+                self.memory_stack.append(obj)
+            elif after[1].value == 'p':
+                obj = Object(np.pi, Types.Number)
+                self.memory_stack.append(obj)
+            elif after[1].value == 's':
+                obj = Object(datetime.now().second, Types.Number)
+                self.memory_stack.append(obj)
+            elif after[1].value == 'M':
+                obj = Object(datetime.now().minute, Types.Number)
+                self.memory_stack.append(obj)
+            elif after[1].value == 'm':
+                obj = Object(datetime.now().microsecond, Types.Number)
+                self.memory_stack.append(obj)
+            elif after[1].value == 'w':
+                obj = Object('www', Types.String)
+                self.memory_stack.append(obj)
+            self.pointer += 1
+        # Length
+        elif op.value == 'l':
+            if self.memory_stack[-1].type == Types.Array or self.memory_stack[-1].value == Types.String:
+                obj = Object(len(self.memory_stack[-1].value), Types.Number)
+                self.memory_stack.append(obj)
         # Range
         elif op.value == 'r':
             if self.memory_stack[-1].type == Types.Number:
