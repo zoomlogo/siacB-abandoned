@@ -456,7 +456,7 @@ class Interpreter:
             if self.for_each_popped is None:
                 self.for_each_popped = self.memory_stack.pop()
                 if self.for_each_popped.type == Types.Number:
-                    self.for_each_popped = Object(range(self.for_each_popped.value), Types.Array)
+                    self.for_each_popped = Object(range(self.for_each_popped.value, 0, -1), Types.Array)
                 self.memory_stack.append(Object(self.for_each_popped.value[self.for_each_i], Types.Number))
                 self.for_each_i += 1
             else:
