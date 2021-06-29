@@ -22,6 +22,7 @@ p                     Push the string ended by `
 ×           2/1       Multiply top 2 elements or multiply top to the next element
 ÷           2/1       Divide top 2 elements or divide top to the next element
 %           2/1       modulo top 2 elements or modulo top to the next element
+*           2/1       raise to power top 2 elements or power top to the next element
 »           2/1       bitshift left
 «           2/1       bitshift right
 &           2         Bitwise and
