@@ -6,7 +6,7 @@ _                     Push len(stack)
 ;           1         Duplicate top of stack
 ,           1         Pop/Remove/Discard top of stack
 ?                     Print stack joined by space
-*                     Reverse stack
+⇅                     Reverse stack
 $           1         Push the copy of top 2 elements of the stack.
 '           2         Swap top two items on stack
 ī                     Input and push to stack (number, array, string)

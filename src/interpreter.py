@@ -41,7 +41,7 @@ class Interpreter:
             for obj in self.memory_stack:
                 print(end=str(obj.value) + ' ')
             print()
-        elif op.value == '*':
+        elif op.value == '⇅':
             self.memory_stack = self.memory_stack[::-1]
         elif op.value == '$':
             self.memory_stack.append(self.memory_stack[-2].copy())
