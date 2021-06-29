@@ -33,7 +33,7 @@ class Interpreter:
         if op.value == '_':
             obj = Object(len(self.memory_stack), Types.Number)
             self.memory_stack.append(obj)
-        elif op.value == ';':
+        elif op.value == '≡':
             self.memory_stack.append(self.memory_stack[-1].copy())
         elif op.value == ',':
             self.memory_stack.pop()
@@ -46,7 +46,7 @@ class Interpreter:
         elif op.value == '$':
             self.memory_stack.append(self.memory_stack[-2].copy())
             self.memory_stack.append(self.memory_stack[-2].copy())
-        elif op.value == '\'':
+        elif op.value == "'":
             tmp = self.memory_stack[-2].copy()
             self.memory_stack[-2] = self.memory_stack[-1].copy()
             self.memory_stack[-1] = tmp
@@ -54,17 +54,21 @@ class Interpreter:
         elif op.value == 'ī':
             val = input()
             try:
+                # Check if its int
                 obj = Object(int(val), Types.Number)
                 self.memory_stack.append(obj)
             except:
                 try:
+                    # Float?
                     obj = Object(float(val), Types.Number)
                     self.memory_stack.append(obj)
                 except:
                     try:
+                        # Maybe array?
                         obj = Object(np.array(eval(val)), Types.Array)
                         self.memory_stack.append(obj)
                     except:
+                        # Oh its a string
                         obj = Object(val, Types.String)
                         self.memory_stack.append(obj)
         # Output
@@ -98,7 +102,7 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value += after[1].value
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value += obj2.value
             elif self.memory_stack[-1].type == Types.String:
@@ -109,7 +113,7 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value -= after[1].value
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value -= obj2.value
         elif op.value == '×':
@@ -117,7 +121,7 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value *= after[1].value
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value *= obj2.value
             elif self.memory_stack[-1].type == Types.String:
@@ -128,7 +132,7 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value /= after[1].value
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value /= obj2.value
         elif op.value == '%':
@@ -136,7 +140,7 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = after.memory_stack[-1].value % after[1].value
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = self.memory_stack[-1].value % obj2.value
         elif op.value == '*':
@@ -144,7 +148,7 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = after.memory_stack[-1].value ** after[1].value
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = self.memory_stack[-1].value ** obj2.value
         # Bitwise operators
@@ -153,7 +157,7 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = self.memory_stack[-1].value >> after[1].value
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = self.memory_stack[-1].value >> obj2.value
         elif op.value == '«':
@@ -161,33 +165,38 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = self.memory_stack[-1].value << after[1].value
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = self.memory_stack[-1].value << obj2.value
         elif op.value == '&':
             if self.memory_stack[-1].type == Types.Number:
-                obj2 = self.memory_stack.pop()
-                self.memory_stack[-1].value = self.memory_stack[-1].value & obj2.value
+                if self.memory_stack[-2].type == Types.Number:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = self.memory_stack[-1].value & obj2.value
         elif op.value == '|':
             if self.memory_stack[-1].type == Types.Number:
-                obj2 = self.memory_stack.pop()
-                self.memory_stack[-1].value = self.memory_stack[-1].value | obj2.value
+                if self.memory_stack[-2].type == Types.Number:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = self.memory_stack[-1].value | obj2.value
         elif op.value == '^':
             if self.memory_stack[-1].type == Types.Number:
-                obj2 = self.memory_stack.pop()
-                self.memory_stack[-1].value = self.memory_stack[-1].value ^ obj2.value
+                if self.memory_stack[-2].type == Types.Number:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = self.memory_stack[-1].value ^ obj2.value
         elif op.value == '!':
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value = ~self.memory_stack[-1].value
         # Logical operators
         elif op.value == '∧':
             if self.memory_stack[-1].type == Types.Number:
-                obj2 = self.memory_stack.pop()
-                self.memory_stack[-1].value = 1 if self.memory_stack[-1].value and obj2.value else 0
+                if self.memory_stack[-2].type == Types.Number:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = 1 if self.memory_stack[-1].value and obj2.value else 0
         elif op.value == '∨':
             if self.memory_stack[-1].type == Types.Number:
-                obj2 = self.memory_stack.pop()
-                self.memory_stack[-1].value = 1 if self.memory_stack[-1].value or obj2.value else 0
+                if self.memory_stack[-2].type == Types.Number:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1].value = 1 if self.memory_stack[-1].value or obj2.value else 0
         elif op.value == '¬':
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value = 1 if not self.memory_stack[-1].value else 0
@@ -310,6 +319,8 @@ class Interpreter:
                 obj = self.memory_stack.pop()
                 obj = Object(np.arange(1, obj.value + 1), Types.Array)
                 self.memory_stack.append(obj)
+            elif self.memory_stack[1].type == Types.Array:
+                    self.memory_stack[-1].value = np.rot90(self.memory_stack[-1].value)
         # Pair
         elif op.value == '"':
             obj1, obj2 = self.memory_stack.pop(), self.memory_stack.pop()
@@ -317,7 +328,7 @@ class Interpreter:
             self.memory_stack.append(obj)
         # Negate
         elif op.value == '±':
-            if self.memory_stack[-1].type == Types.Number:
+            if self.memory_stack[-1].type == Types.Number or self.memory_stack[-1].type == Types.Array:
                 self.memory_stack[-1].value *= -1
         # Floor and ceil
         elif op.value == '⊥':
@@ -327,17 +338,15 @@ class Interpreter:
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value = int(self.memory_stack[-1].value) + 1
         # Array operators
-        elif op.value == 'A':
-            if self.memory_stack[-1].type == Types.Array:
-                if after[1].value == 'S':
-                    self.memory_stack[-1].value = np.sort(self.memory_stack[-1].value)
-                elif after[1].value == 'T':
-                    self.memory_stack[-1].value = self.memory_stack[-1].value.T
-                elif after[1].value == 'R':
-                    self.memory_stack[-1].value = np.rot90(self.memory_stack[-1].value)
-                elif after[1].value == 'F':
-                    self.memory_stack[-1].value = self.memory_stack[-1].value.flatten()
-            self.pointer += 1
+        elif after[1].value == 'S':
+            if self.memory_stack[-1].Type == Types.Array:
+                self.memory_stack[-1].value = np.sort(self.memory_stack[-1].value)
+        elif after[1].value == 'T':
+            if self.memory_stack[-1].Type == Types.Array:
+                self.memory_stack[-1].value = self.memory_stack[-1].value.T
+        elif after[1].value == 'F':
+            if self.memory_stack[-1].Type == Types.Array:
+                self.memory_stack[-1].value = self.memory_stack[-1].value.flatten()
         # ABS
         elif op.value == '⊢':
             if self.memory_stack[-1].type == Types.Number:
@@ -347,7 +356,7 @@ class Interpreter:
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1] = Object(chr(self.memory_stack[-1].value), Types.String)
         elif op.value == 'S':
-            if self.memory_stack[-1].type:
+            if self.memory_stack[-1].type == Types.String:
                 if len(self.memory_stack[-1].value) == 1:
                     self.memory_stack[-1] = Object(ord(self.memory_stack[-1].value), Types.Number)
                 else:
@@ -373,15 +382,16 @@ class Interpreter:
         # Belongs to
         elif op.value == 'c':
             if self.memory_stack[-1].type == Types.Array:
-                obj = Object(1 if self.memory_stack[-2].value in self.memory_stack[-1].value else 0, Types.Number)
-                self.memory_stack.append(obj)
+                if self.memory_stack[-2].type == Types.Number:
+                    obj = Object(1 if self.memory_stack[-2].value in self.memory_stack[-1].value else 0, Types.Number)
+                    self.memory_stack.append(obj)
         # Comparision operators
         elif op.value == '=':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value == after[1].value else 0
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value == obj2.value else 0
             elif self.memory_stack[-1].type == Types.Array:
@@ -397,15 +407,23 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value != after[1].value else 0
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value != obj2.value else 0
+            elif self.memory_stack[-1].type == Types.Array:
+                if self.memory_stack[-2].type == Types.Array:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1] = Object(0 if np.array_equal(self.memory_stack[-1].value, obj2.value) else 1, Types.Number)
+            elif self.memory_stack[-1].type == Types.String:
+                if self.memory_stack[-2].type == Types.String:
+                    obj2 = self.memory_stack.pop()
+                    self.memory_stack[-1] = Object(1 if self.memory_stack[-1].value != obj2.value else 0, Types.Number)
         elif op.value == '>':
             if self.memory_stack[-1].type == Types.Number:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value > after[1].value else 0
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value > obj2.value else 0
         elif op.value == '<':
@@ -413,7 +431,7 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value < after[1].value else 0
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value < obj2.value else 0
         elif op.value == '≤':
@@ -421,7 +439,7 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value <= after[1].value else 0
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value <= obj2.value else 0
         elif op.value == '≥':
@@ -429,7 +447,7 @@ class Interpreter:
                 if after[1].type == TokenTypes.Number:
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value >= after[1].value else 0
                     self.pointer += 1
-                else:
+                elif self.memory_stack[-2].type == Types.Number:
                     obj2 = self.memory_stack.pop()
                     self.memory_stack[-1].value = 1 if self.memory_stack[-1].value >= obj2.value else 0
         # If statements

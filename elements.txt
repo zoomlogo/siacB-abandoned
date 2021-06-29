@@ -3,7 +3,7 @@ Command     Arity     Description
 <Space>               Nothing
 <Newline>             Nothing
 _                     Push len(stack)
-;           1         Duplicate top of stack
+≡           1         Duplicate top of stack
 ,           1         Pop/Remove/Discard top of stack
 ?                     Print stack joined by space
 ⇅                     Reverse stack
