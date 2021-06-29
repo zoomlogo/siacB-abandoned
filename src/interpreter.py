@@ -17,7 +17,7 @@ class Interpreter:
 
     def op_eval(self, op, before, after):
         # For each reset
-        if len(before) > 0 and before[-1].value == '⁆':
+        if len(before) > 0 and before[-1].value == ']':
             self.for_each_i = 0
             self.for_each_popped = None
         # For logging
@@ -478,7 +478,7 @@ class Interpreter:
         elif op.value == ')':
             self.pointer = op.misc["start"] - 1
         # For each
-        elif op.value == '⁅':
+        elif op.value == '[':
             if self.for_each_popped is None:
                 self.for_each_popped = self.memory_stack.pop()
                 if self.for_each_popped.type == Types.Number:
@@ -491,7 +491,7 @@ class Interpreter:
                     self.for_each_i += 1
                 else:
                     self.pointer = op.misc["end"]
-        elif op.value == '⁆':
+        elif op.value == ']':
             self.pointer = op.misc["start"] - 1
 
     def run(self):

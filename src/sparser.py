@@ -136,14 +136,14 @@ class Parser:
                                 "start": token.misc["start"]
                             }
                             tok.update(misc)
-            elif char == '⁅':
+            elif char == '[':
                 foreach_end = self.get_tok_bounds(after_tok, '⁅', '⁆')
                 misc = {
                     "start": i,
                     "end": i + foreach_end
                 }
                 tok.update(misc)
-            elif char == '⁆':
+            elif char == ']':
                 for token in self.parsed:
                     if token.type == TokenTypes.Command and token.value == '⁅':
                         if token.misc['end'] == i:

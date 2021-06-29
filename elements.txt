@@ -93,5 +93,5 @@ c           2         Belongs to
 ⁇           1         If then next command else skip
 (           1         While
 )                     While end
-⁅           1         For each
-⁆                     For each end
+[           1         For each
+]                     For each end
