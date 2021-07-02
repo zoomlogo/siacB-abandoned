@@ -338,13 +338,13 @@ class Interpreter:
             if self.memory_stack[-1].type == Types.Number:
                 self.memory_stack[-1].value = int(self.memory_stack[-1].value) + 1
         # Array operators
-        elif after[1].value == 'S':
+        elif op.value == 'S':
             if self.memory_stack[-1].Type == Types.Array:
                 self.memory_stack[-1].value = np.sort(self.memory_stack[-1].value)
-        elif after[1].value == 'T':
+        elif op.value == 'T':
             if self.memory_stack[-1].Type == Types.Array:
                 self.memory_stack[-1].value = self.memory_stack[-1].value.T
-        elif after[1].value == 'F':
+        elif op.value == 'F':
             if self.memory_stack[-1].Type == Types.Array:
                 self.memory_stack[-1].value = self.memory_stack[-1].value.flatten()
         # ABS
