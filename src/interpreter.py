@@ -2,6 +2,7 @@ from sparser import TokenTypes
 from stypes import Types, Object
 
 import numpy as np
+from random import choice, randint
 from datetime import datetime
 
 class Interpreter:
@@ -314,6 +315,14 @@ class Interpreter:
                 obj = self.memory_stack.pop()
                 obj = Object(np.arange(obj.value), Types.Array)
                 self.memory_stack.append(obj)
+            elif self.memory_stack[-1].type == Types.Array:
+                obj = self.memory_stack.pop()
+                if len(obj.value) == 2:
+                    pobj = Object(randint(obj.value[0], obj.value[1]), Types.Number)
+                    self.memory_stack.append(pobj)
+                else:
+                    pobj = Object(choice(obj.value), Types.Number)
+                    self.memory_stack.append(pobj)
         elif op.value == 'R':
             if self.memory_stack[-1].type == Types.Number:
                 obj = self.memory_stack.pop()
