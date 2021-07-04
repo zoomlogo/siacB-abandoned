@@ -356,6 +356,10 @@ class Interpreter:
         elif op.value == 'F':
             if self.memory_stack[-1].type == Types.Array:
                 self.memory_stack[-1].value = self.memory_stack[-1].value.flatten()
+        elif op.value == '∑':
+            if self.memory_stack[-1].type == Types.Array:
+                self.memory_stack[-1].value = np.sum(self.memory_stack[-1].value)
+                self.memory_stack[-1].type = Types.Number
         # ABS
         elif op.value == '⊢':
             if self.memory_stack[-1].type == Types.Number:
