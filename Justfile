@@ -1,6 +1,8 @@
 default:
     @just --list
 
-alias ex := example
-example:
-    python src/main.py src/test.pL3 --log
+run:
+    python src/skrun.py src/test.sk --log
+
+parse:
+    python src/skParse.py
