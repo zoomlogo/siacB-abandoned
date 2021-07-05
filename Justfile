@@ -6,3 +6,6 @@ run:
 
 parse:
     python src/skParse.py
+
+token:
+    python src/skToken.py
