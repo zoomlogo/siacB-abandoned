@@ -1,7 +1,10 @@
+from enum import Enum
+
 # Define token types
-class TType:
-    CONSTANT = 0
-    COMMAND = 1
+class TType(Enum):
+    NUMBER = 0
+    STRING = 1
+    COMMAND = 2
 
 # Token class to be used in parser
 class Token:
@@ -14,11 +17,7 @@ class Token:
         self.misc = misc
 
     def __repr__(self):
-        repn = "Token(\n"
-        repn += f"    value={repr(self.value)},\n"
-        repn += f"    type={self.type},\n"
-        repn += f"    misc={self.misc}\n"
-        repn += ")"
+        repn = f"Token({repr(self.value)}, {self.type}, {self.misc})"
         return repn
 
 
