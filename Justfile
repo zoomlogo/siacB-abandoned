@@ -9,3 +9,12 @@ parse:
 
 token:
     python src/skToken.py
+
+object:
+    python src/skObject.py
+
+stack:
+    python src/skStack.py
+
+input:
+    python src/skInput.py
