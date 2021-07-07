@@ -37,7 +37,7 @@ class Parser:
                 code += after[1:string_end]
                 code += '`'
             elif char == '\\':
-                # Single char pusher
+                # Single char skip
                 code += '\\' + after[1]
                 i += 1
             elif char == ' ' or char == '\n':
