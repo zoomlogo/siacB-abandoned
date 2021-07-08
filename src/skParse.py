@@ -15,8 +15,8 @@ def get_end_group(string, group):
     # Given a string find the end of the group
     i = 0
     while i < len(string):
-        char = string[1]
-        if not (char in group):
+        char = string[i]
+        if not char in group:
             break
         i += 1
     return i
@@ -133,9 +133,10 @@ class Parser:
                 for t in self.tokens:
                     if t.value == '(' and t.misc['end'] == i:
                         misc = {
-                            "start": token.misc["start"],
-                            "end": i,
+                            "start": t.misc['start'],
+                            "end": i
                         }
+                        token.update(misc)
 
             i += 1
 
