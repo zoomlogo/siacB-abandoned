@@ -31,6 +31,28 @@ def get_index_token(tokens, char_to_find):
         i += 1
     return i
 
+def get_close_token(tokens, open, close):
+    is_bound = 0
+    found_start = False
+    end_index = None
+
+    i = 0
+    while i < len(tokens):
+        tok = tokens[i]
+        char = tok.value
+        if char == open:
+            if not found_start:
+                found_start = True
+            is_bound += 1
+        elif char == close:
+            is_bound -= 1
+            if is_bound == 0:
+                end_index = i
+                break
+        i += 1
+
+    return end_index
+
 class Parser:
     def __init__(self, code):
         self.code = code
@@ -122,7 +144,7 @@ class Parser:
 
             if char == '(':
                 # While loop
-                while_loop_end = get_index_token(after, ')')
+                while_loop_end = get_close_token(after, '(', ')')
                 misc = {
                     "start": i,
                     "end": i + while_loop_end
@@ -131,7 +153,7 @@ class Parser:
             elif char == ')':
                 # End of while loop
                 for t in self.tokens:
-                    if t.value == '(' and t.misc['end'] == i:
+                    if t.value == '(' and 'end' in t.misc and t.misc['end'] == i:
                         misc = {
                             "start": t.misc['start'],
                             "end": i
@@ -141,7 +163,7 @@ class Parser:
             i += 1
 
 if __name__ == '__main__':
-    p = Parser(r"a\ `ab`2e10(i)")
+    p = Parser(r"(())")
     print("============")
     print(p.code)
     print("============")
