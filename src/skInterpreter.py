@@ -34,6 +34,10 @@ class Interpreter:
                 self.log_file.write(repr(t) + "\n")
             self.log_file.write("----------RUNNING--------\n")
 
+    def skip(self, amt):
+        # Skip (add amt to the pointer)
+        self.pointer += amt
+
     def execute_token(self, token, after, before):
         # Stack operations
         if token.value == '_':
@@ -43,9 +47,20 @@ class Interpreter:
                 OType.NUMBER
             )
             self.stack.push(obj)
+        # I/O
+        elif token.value == 'ṭ':
+            # Pop and print the top of the stack
+            if not self.stack.is_empty():
+                print(self.stack.pop())
 
     def run(self):
         while self.pointer < len(self.tokens):
+            # Execute the current token
+            before = self.tokens[:self.pointer]
+            operation = self.tokens[self.pointer]
+            after = self.tokens[self.pointer:]
+            self.execute_token(operation, after, before)
+
             self.pointer += 1
         return self.stdout
 
