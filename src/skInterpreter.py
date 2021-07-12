@@ -84,6 +84,10 @@ class Interpreter:
             # Pop and print the top of the stack
             if not self.stack.is_empty():
                 print(self.stack.pop())
+        # Constants
+        elif token.type == TType.NUMBER:
+            obj = Object(token.value, OType.NUMBER)
+            self.stack.push(obj)
 
     def run(self):
         while self.pointer < len(self.tokens):
