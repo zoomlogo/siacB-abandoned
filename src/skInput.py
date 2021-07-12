@@ -2,10 +2,10 @@ import skObject
 import numpy as np
 
 class SmartInput:
-    def __init__(self):
-        self.reset = False
+    def __init__(self, inputs=[]):
+        self.reset = True if inputs else False
         self.i = 0
-        self.inputs = []
+        self.inputs = inputs
 
     def input(self):
         if not self.reset:

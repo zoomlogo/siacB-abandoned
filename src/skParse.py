@@ -1,6 +1,5 @@
 from skToken import Token, TType
 
-
 def get_index(string, to_find):
     # Better index (if not found return ending)
     i = 0
