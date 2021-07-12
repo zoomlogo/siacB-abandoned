@@ -35,7 +35,14 @@ class Interpreter:
             self.log_file.write("----------RUNNING--------\n")
 
     def execute_token(self, token, after, before):
-        ...
+        # Stack operations
+        if token.value == '_':
+            # Push length of stack
+            obj = Object(
+                len(self.stack),
+                OType.NUMBER
+            )
+            self.stack.push(obj)
 
     def run(self):
         while self.pointer < len(self.tokens):

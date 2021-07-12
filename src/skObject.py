@@ -16,6 +16,9 @@ class Object:
         repn = f"Object({repr(self.value)}, {self.type})"
         return repn
 
+    def copy(self):
+        return Object(self.value, self.type)
+
 # Test
 if __name__ == "__main__":
     token = Object(23, OType.NUMBER)
