@@ -56,8 +56,15 @@ class Interpreter:
         elif token.value == ',':
             # Pop and discard the top of the stack
             self.stack.pop()
+        elif token.value == '⇅':
+            # Reverse stack
+            self.stack.stack = self.stack.stack[::-1]
         # I/O
-        elif token.value == 'ṭ':
+        elif token.value == 'i':
+            # Explicit input
+            obj = self.smart_input.input()
+            self.stack.push(obj)
+        elif token.value == 't':
             # Pop and print the top of the stack
             if not self.stack.is_empty():
                 print(self.stack.pop())

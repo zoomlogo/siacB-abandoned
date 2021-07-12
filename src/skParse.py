@@ -125,8 +125,8 @@ class Parser:
             self.code_pointer += 1
 
         # Implicit output
-        if not ('ṭ' in self.code):
-            self.tokens.append(Token('ṭ', TType.COMMAND))
+        if not ('t' in self.code):
+            self.tokens.append(Token('t', TType.COMMAND))
 
         self.match_brackets()
 
