@@ -59,6 +59,16 @@ class Interpreter:
         elif token.value == '⇅':
             # Reverse stack
             self.stack.stack = self.stack.stack[::-1]
+        elif token.value == '$':
+            # Duplicate the top 2 elements (in order)
+            popped = self.stack.pop()
+            popped2 = self.stack.pop()
+            copy = popped.copy()
+            copy2 = popped2.copy()
+            self.stack.push(popped)
+            self.stack.push(popped2)
+            self.stack.push(copy)
+            self.stack.push(copy2)
         # I/O
         elif token.value == 'i':
             # Explicit input
