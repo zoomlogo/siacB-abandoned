@@ -30,5 +30,5 @@ if __name__ == '__main__':
         flags.append("l")
 
     code = file.read()
-    for s in run(code):
+    for s in run(code, flags):
         print(s)

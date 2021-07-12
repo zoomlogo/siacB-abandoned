@@ -27,6 +27,13 @@ class Interpreter:
 
         self.stdout = []
 
+        self.log_file = open('log.txt', 'w+', encoding="utf-8") if self.log else None
+        if self.log:
+            self.log_file.write("---------TOKENS---------\n")
+            for t in tokens:
+                self.log_file.write(repr(t) + "\n")
+            self.log_file.write("----------RUNNING--------\n")
+
     def run(self):
         return self.stdout
 
