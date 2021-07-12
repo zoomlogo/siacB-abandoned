@@ -159,15 +159,52 @@ class Parser:
                             "end": i
                         }
                         token.update(misc)
+            if char == '[':
+                # foreach loop
+                foreach_loop_end = get_close_token(after, '[', ']')
+                misc = {
+                    "start": i,
+                    "end": i + foreach_loop_end
+                }
+                token.update(misc)
+            elif char == ']':
+                # End of foreach loop
+                for t in self.tokens:
+                    if t.value == '[' and 'end' in t.misc and t.misc['end'] == i:
+                        misc = {
+                            "start": t.misc['start'],
+                            "end": i
+                        }
+                        token.update(misc)
+            elif char == '{':
+                # If statement
+                if_end = get_close_token(after, '{', '}')
+                else_end = get_close_token(after, '{', '?')
+                misc = {
+                    "start": i,
+                    "else": i + else_end if else_end is not None else None,
+                    "end": i + if_end
+                }
+                token.update(misc)
+            elif char == '?':
+                # If else statement
+                if_end = get_close_token(after, '?', '}')
+                misc = {
+                    "end": i + if_end
+                }
+                token.update(misc)
+
 
             i += 1
 
 if __name__ == '__main__':
-    p = Parser(r"(())")
+    p = Parser(r"({()?})i[]")
     print("============")
     print(p.code)
     print("============")
     p.remove_whitespace()
     print(p.code)
     print("============")
-    print(p.parse())
+    p = p.parse()
+    for t in p:
+        print(t)
