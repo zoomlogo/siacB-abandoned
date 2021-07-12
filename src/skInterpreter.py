@@ -69,6 +69,12 @@ class Interpreter:
             self.stack.push(popped2)
             self.stack.push(copy)
             self.stack.push(copy2)
+        elif token.value == '\'':
+            # Reverse the top 2 elements
+            popped = self.stack.pop()
+            popped2 = self.stack.pop()
+            self.stack.push(popped2)
+            self.stack.push(popped)
         # I/O
         elif token.value == 'i':
             # Explicit input
