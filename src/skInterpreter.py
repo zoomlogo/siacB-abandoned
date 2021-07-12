@@ -47,6 +47,12 @@ class Interpreter:
                 OType.NUMBER
             )
             self.stack.push(obj)
+        elif token.value == ':':
+            # Duplicate the top of the stack
+            popped = self.stack.pop()
+            copy = popped.copy()
+            self.stack.push(popped)
+            self.stack.push(copy)
         # I/O
         elif token.value == 'ṭ':
             # Pop and print the top of the stack
