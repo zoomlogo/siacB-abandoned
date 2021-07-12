@@ -53,6 +53,9 @@ class Interpreter:
             copy = popped.copy()
             self.stack.push(popped)
             self.stack.push(copy)
+        elif token.value == ',':
+            # Pop and discard the top of the stack
+            self.stack.pop()
         # I/O
         elif token.value == 'ṭ':
             # Pop and print the top of the stack
