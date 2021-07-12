@@ -2,6 +2,7 @@ import argparse
 from skParse import Parser
 from skInterpreter import Interpreter
 
+# This function will be used in the online interpreter
 def run(code, flags=[], inputs=[]):
     parser = Parser(code)
     parser.remove_whitespace()
@@ -11,6 +12,7 @@ def run(code, flags=[], inputs=[]):
     return interpreter.run()
 
 if __name__ == '__main__':
+    # If we are not imported; create an argparser and run the file
     argparser = argparse.ArgumentParser()
     argparser.add_argument("file", help="The name of the file you want to execute.")
     argparser.add_argument("-l", "--log", action='store_true', help='Generate a log of each command')

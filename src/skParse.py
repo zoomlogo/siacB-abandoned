@@ -95,7 +95,6 @@ class Parser:
 
     def parse(self):
         # Parse code into a list of tokens
-
         while self.code_pointer < len(self.code):
             char = self.code[self.code_pointer]
             after = self.code[self.code_pointer:]

@@ -34,6 +34,9 @@ class Interpreter:
                 self.log_file.write(repr(t) + "\n")
             self.log_file.write("----------RUNNING--------\n")
 
+    def execute_token(self, token, after, before):
+        ...
+
     def run(self):
         while self.pointer < len(self.tokens):
             self.pointer += 1

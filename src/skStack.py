@@ -1,5 +1,6 @@
 from skInput import SmartInput
 
+# Main stack
 class SmartStack:
     def __init__(self, input_obj):
         self.stack = []
@@ -15,6 +16,12 @@ class SmartStack:
 
     def push(self, value):
         self.stack.append(value)
+
+    def __len__(self):
+        return len(self.stack)
+    
+    def is_empty(self):
+        return not self.stack
 
     def __repr__(self):
         repn = "[ "
