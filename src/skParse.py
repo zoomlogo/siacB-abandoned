@@ -76,7 +76,7 @@ class Parser:
                 string_end = get_index(after[1:], '`')
                 i += string_end + 1
                 code += '`'
-                code += after[1:string_end]
+                code += after[1:string_end + 1]
                 code += '`'
             elif char == '\\':
                 # Single char skip
@@ -112,7 +112,7 @@ class Parser:
             elif char == '`':
                 string_end = get_index(after[1:], '`')
                 self.tokens.append(Token('`', TType.COMMAND))
-                self.tokens.append(Token(after[1:string_end], TType.STRING))
+                self.tokens.append(Token(after[1:string_end + 1], TType.STRING))
                 self.tokens.append(Token('`', TType.COMMAND))
                 self.code_pointer += string_end + 1
             elif char == '\\':
@@ -196,7 +196,7 @@ class Parser:
             i += 1
 
 if __name__ == '__main__':
-    p = Parser("⯈osadosdk\na{a#b}skj")
+    p = Parser("`asas`")
     print("============")
     print(p.code)
     print("============")
