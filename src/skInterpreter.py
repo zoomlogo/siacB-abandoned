@@ -81,9 +81,9 @@ class Interpreter:
             obj = self.smart_input.input()
             self.stack.push(obj)
         elif token.value == 't':
-            # Pop and print the top of the stack
+            # Pop and print (append to stdout) the top of the stack
             if not self.stack.is_empty():
-                print(self.stack.pop())
+                self.stdout.append(self.stack.pop().value)
         # Constants
         elif token.type == TType.NUMBER:
             obj = Object(token.value, OType.NUMBER)
