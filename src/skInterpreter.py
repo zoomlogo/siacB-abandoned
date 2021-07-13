@@ -106,6 +106,14 @@ class Interpreter:
         elif token.value == '®':
             # Recall from the top of the registor
             self.stack.push(self.registor)
+        # Arithmetic oprations
+        elif token.value == '+':
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                if after[1].type == TType.NUMBER:
+                    popped.value += after[1].value
+                    self.stack.push(popped)
+                    self.skip(1)
 
     def run(self):
         while self.pointer < len(self.tokens):
