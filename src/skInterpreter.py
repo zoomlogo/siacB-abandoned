@@ -94,6 +94,11 @@ class Interpreter:
                 self.skip(2)
             else:
                 self.skip(1)
+        elif token.value == '\\':
+            # Push next character
+            obj = Object(after[1].value, OType.STRING)
+            self.stack.push(obj)
+            self.skip(1)
 
     def run(self):
         while self.pointer < len(self.tokens):
