@@ -99,6 +99,13 @@ class Interpreter:
             obj = Object(after[1].value, OType.STRING)
             self.stack.push(obj)
             self.skip(1)
+        # Register operations
+        elif token.value == '©':
+            # Copy the top of the stack to the register
+            self.registor = self.stack.pop()
+        elif token.value == '®':
+            # Recall from the top of the registor
+            self.stack.push(self.registor)
 
     def run(self):
         while self.pointer < len(self.tokens):
