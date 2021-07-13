@@ -7,6 +7,7 @@ import numpy as np
 import time
 import random
 import datetime
+from icecream import ic
 
 class Interpreter:
     def __init__(self, tokens, flags=[], inputs=[]):
@@ -107,5 +108,5 @@ class Interpreter:
             self.execute_token(operation, after, before)
 
             self.pointer += 1
-        return self.stdout
+        return ic(self.stdout)
 
