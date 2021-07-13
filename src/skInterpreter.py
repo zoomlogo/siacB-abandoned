@@ -86,8 +86,17 @@ class Interpreter:
                 self.stdout.append(self.stack.pop().value)
         # Constants
         elif token.type == TType.NUMBER:
+            # Number
             obj = Object(token.value, OType.NUMBER)
             self.stack.push(obj)
+        elif token.value == '`':
+            # String
+            obj = Object(after[1].value, OType.STRING)
+            self.stack.push(obj)
+            if after[2].value == '`':
+                self.skip(2)
+            else:
+                self.skip(1)
 
     def run(self):
         while self.pointer < len(self.tokens):
