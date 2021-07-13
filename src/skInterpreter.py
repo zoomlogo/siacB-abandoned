@@ -119,6 +119,66 @@ class Interpreter:
                     popped2 = self.stack.pop()
                     popped2.value += popped.value
                     self.stack.push(popped2)
+        elif token.value == '-':
+            # Subtract
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                if after[1].type == TType.NUMBER:
+                    popped.value -= after[1].value
+                    self.stack.push(popped)
+                    self.skip(1)
+                else:
+                    popped2 = self.stack.pop()
+                    popped2.value -= popped.value
+                    self.stack.push(popped2)
+        elif token.value == '×':
+            # Multiply
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                if after[1].type == TType.NUMBER:
+                    popped.value *= after[1].value
+                    self.stack.push(popped)
+                    self.skip(1)
+                else:
+                    popped2 = self.stack.pop()
+                    popped2.value *= popped.value
+                    self.stack.push(popped2)
+        elif token.value == '÷':
+            # Divide
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                if after[1].type == TType.NUMBER:
+                    popped.value /= after[1].value
+                    self.stack.push(popped)
+                    self.skip(1)
+                else:
+                    popped2 = self.stack.pop()
+                    popped2.value /= popped.value
+                    self.stack.push(popped2)
+        elif token.value == '%':
+            # Modulo
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                if after[1].type == TType.NUMBER:
+                    popped.value = popped.value % after[1].value
+                    self.stack.push(popped)
+                    self.skip(1)
+                else:
+                    popped2 = self.stack.pop()
+                    popped2.value = popped2.value % popped.value
+                    self.stack.push(popped2)
+        elif token.value == '*':
+            # Power
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                if after[1].type == TType.NUMBER:
+                    popped.value = popped.value ** after[1].value
+                    self.stack.push(popped)
+                    self.skip(1)
+                else:
+                    popped2 = self.stack.pop()
+                    popped2.value = popped2.value ** popped.value
+                    self.stack.push(popped2)
 
     def run(self):
         while self.pointer < len(self.tokens):
