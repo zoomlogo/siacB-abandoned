@@ -18,9 +18,9 @@ class Interpreter:
         self.stack = SmartStack(self.smart_input)
         self.pointer = 0
 
-        self.registor = Object(0, OType.NUMBER)
+        self.register = Object(0, OType.NUMBER)
 
-        self.function_call = Stack()
+        self.function_call_stack = Stack()
 
         self.foreach_index = Stack()
         self.foreach_object = Stack()
@@ -102,10 +102,10 @@ class Interpreter:
         # Register operations
         elif token.value == '©':
             # Copy the top of the stack to the register
-            self.registor = self.stack.pop()
+            self.register = self.stack.pop()
         elif token.value == '®':
             # Recall from the top of the registor
-            self.stack.push(self.registor)
+            self.stack.push(self.register)
         # Arithmetic oprations
         elif token.value == '+':
             # Add
@@ -117,8 +117,8 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped2.value += popped.value
-                    self.stack.push(popped2)
+                    popped.value += popped2.value
+                    self.stack.push(popped)
         elif token.value == '-':
             # Subtract
             popped = self.stack.pop()
@@ -129,8 +129,8 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped2.value -= popped.value
-                    self.stack.push(popped2)
+                    popped.value -= popped2.value
+                    self.stack.push(popped)
         elif token.value == '×':
             # Multiply
             popped = self.stack.pop()
@@ -141,8 +141,8 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped2.value *= popped.value
-                    self.stack.push(popped2)
+                    popped.value *= popped2.value
+                    self.stack.push(popped)
         elif token.value == '÷':
             # Divide
             popped = self.stack.pop()
@@ -153,8 +153,8 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped2.value /= popped.value
-                    self.stack.push(popped2)
+                    popped.value /= popped2.value
+                    self.stack.push(popped)
         elif token.value == '%':
             # Modulo
             popped = self.stack.pop()
@@ -165,8 +165,8 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped2.value = popped2.value % popped.value
-                    self.stack.push(popped2)
+                    popped.value = popped.value % popped2.value
+                    self.stack.push(popped)
         elif token.value == '*':
             # Power
             popped = self.stack.pop()
@@ -177,16 +177,27 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped2.value = popped2.value ** popped.value
-                    self.stack.push(popped2)
+                    popped.value = popped.value ** popped2.value
+                    self.stack.push(popped)
 
     def run(self):
         while self.pointer < len(self.tokens):
-            # Execute the current token
             before = self.tokens[:self.pointer]
             operation = self.tokens[self.pointer]
             after = self.tokens[self.pointer:]
+
+            # Execute the current token
             self.execute_token(operation, after, before)
+
+            # Log
+            if self.log:
+                self.log_file.write(f"\nPOINTER: {self.pointer}\n")
+                self.log_file.write(f"  {operation = }\n")
+                self.log_file.write(f"  {repr(self.stack)}\n")
+                self.log_file.write(f"  Register = {self.register}\n")
+                self.log_file.write(f"  FCall Stack = {self.function_call_stack}\n")
+                self.log_file.write(f"  ForEach I = {self.foreach_index}\n")
+                self.log_file.write(f"  ForEach Obj = {self.foreach_object}\n")
 
             self.pointer += 1
         return self.stdout
