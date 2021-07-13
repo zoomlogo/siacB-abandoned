@@ -42,10 +42,7 @@ class Interpreter:
         # Stack operations
         if token.value == '_':
             # Push length of stack
-            obj = Object(
-                len(self.stack),
-                OType.NUMBER
-            )
+            obj = Object(len(self.stack), OType.NUMBER)
             self.stack.push(obj)
         elif token.value == ':':
             # Duplicate the top of the stack
