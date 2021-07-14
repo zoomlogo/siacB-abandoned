@@ -189,6 +189,7 @@ class Interpreter:
                     self.stack.push(popped2)
         # Bitwise (very wise indeed) operators
         elif token.value == '»':
+            # Bitshift right
             popped = self.stack.pop()
             if popped.type == OType.NUMBER:
                 if after[1].type == TType.NUMBER:
@@ -200,6 +201,7 @@ class Interpreter:
                     popped2.value >>= popped.value
                     self.stack.push(popped2)
         elif token.value == '«':
+            # Bitshift right
             popped = self.stack.pop()
             if popped.type == OType.NUMBER:
                 if after[1].type == TType.NUMBER:
@@ -210,6 +212,33 @@ class Interpreter:
                     popped2 = self.stack.pop()
                     popped2.value <<= popped.value
                     self.stack.push(popped2)
+        elif token.value == '&':
+            # Bitwise and
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER:
+                popped2 = self.stack.pop()
+                popped2.value &= popped.value
+                self.stack.push(popped2)
+        elif token.value == '|':
+            # Bitwise or
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER:
+                popped2 = self.stack.pop()
+                popped2.value |= popped.value
+                self.stack.push(popped2)
+        elif token.value == '^':
+            # Bitwise xor
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER:
+                popped2 = self.stack.pop()
+                popped2.value ^= popped.value
+                self.stack.push(popped2)
+        elif token.value == '~':
+            # Bitwise not
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER:
+                popped.value = ~popped.value
+                self.stack.push(popped)
 
     def run(self):
         while self.pointer < len(self.tokens):
