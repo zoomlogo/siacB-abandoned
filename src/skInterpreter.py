@@ -260,6 +260,13 @@ class Interpreter:
             if popped.type == OType.NUMBER:
                 obj = Object(1 if not popped.value else 0, OType.NUMBER)
                 self.stack.push(obj)
+        # More number things
+        elif token.value == 'C':
+            # Complement
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER:
+                popped.value = 1 - popped.value
+                self.stack.push(popped)
 
     def run(self):
         while self.pointer < len(self.tokens):
