@@ -239,6 +239,27 @@ class Interpreter:
             if popped.type == OType.NUMBER:
                 popped.value = ~popped.value
                 self.stack.push(popped)
+        # Logical operators
+        elif token.value == '∧':
+            # logical and
+            popped = self.stack.pop()
+            popped2 = self.stack.pop()
+            if popped.type == OType.NUMBER and popped2.type == OType.NUMBER:
+                obj = Object(1 if popped.value and popped2.value else 0, OType.NUMBER)
+                self.stack.push(obj)
+        elif token.value == '∨':
+            # logical or
+            popped = self.stack.pop()
+            popped2 = self.stack.pop()
+            if popped.type == OType.NUMBER and popped2.type == OType.NUMBER:
+                obj = Object(1 if popped.value or popped2.value else 0, OType.NUMBER)
+                self.stack.push(obj)
+        elif token.value == '¬':
+            # logical not
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER:
+                obj = Object(1 if not popped.value else 0, OType.NUMBER)
+                self.stack.push(obj)
 
     def run(self):
         while self.pointer < len(self.tokens):
