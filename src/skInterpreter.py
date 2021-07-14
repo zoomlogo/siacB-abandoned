@@ -267,6 +267,57 @@ class Interpreter:
             if popped.type == OType.NUMBER:
                 popped.value = 1 - popped.value
                 self.stack.push(popped)
+        elif token.value == '²':
+            # Square
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                popped.value **= 2
+                self.stack.push(popped)
+        elif token.value == '³':
+            # Cube
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                popped.value **= 3
+                self.stack.push(popped)
+        elif token.value == '√':
+            # Square root
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                popped.value **= 0.5
+                self.stack.push(popped)
+        elif token.value == '∛':
+            # Cube root
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                popped.value **= 1 / 3
+                self.stack.push(popped)
+        elif token.value == '½':
+            # Half or split in 2 equal parts
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER:
+                popped.value *= 0.5
+                self.stack.push(popped)
+            elif popped.type == OType.ARRAY:
+                arrlis = np.array_split(popped.value, 2)
+                for arr in arrlis:
+                    self.stack.push(Object(arr, OType.ARRAY))
+            elif popped.type == OType.STRING:
+                half = int(len(popped.value) / 2)
+                parts = [popped.value[:half], popped.value[half:]]
+                for p in parts:
+                    self.stack.push(Object(p, OType.STRING))
+        elif token.value == '¼':
+            # Multiply be 1/4
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                popped.value *= 1 / 4
+                self.stack.push(popped)
+        elif token.value == '¾':
+            # Multiply be 3/4
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
+                popped.value **= 3 / 4
+                self.stack.push(popped)
 
     def run(self):
         while self.pointer < len(self.tokens):
