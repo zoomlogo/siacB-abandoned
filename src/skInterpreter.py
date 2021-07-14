@@ -117,8 +117,12 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped.value += popped2.value
-                    self.stack.push(popped)
+                    popped2.value += popped.value
+                    self.stack.push(popped2)
+            elif popped.type == OType.STRING:
+                popped2 = self.stack.pop()
+                popped2.value += popped.value
+                self.stack.push(popped2)
         elif token.value == '-':
             # Subtract
             popped = self.stack.pop()
@@ -129,8 +133,8 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped.value -= popped2.value
-                    self.stack.push(popped)
+                    popped2.value -= popped.value
+                    self.stack.push(popped2)
         elif token.value == '×':
             # Multiply
             popped = self.stack.pop()
@@ -141,8 +145,12 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped.value *= popped2.value
-                    self.stack.push(popped)
+                    popped2.value *= popped.value
+                    self.stack.push(popped2)
+            elif popped.type == OType.STRING:
+                popped2 = self.stack.pop()
+                popped2.value *= popped.value
+                self.stack.push(popped2)
         elif token.value == '÷':
             # Divide
             popped = self.stack.pop()
@@ -153,8 +161,8 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped.value /= popped2.value
-                    self.stack.push(popped)
+                    popped2.value /= popped.value
+                    self.stack.push(popped2)
         elif token.value == '%':
             # Modulo
             popped = self.stack.pop()
@@ -165,8 +173,8 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped.value = popped.value % popped2.value
-                    self.stack.push(popped)
+                    popped2.value = popped2.value % popped.value
+                    self.stack.push(popped2)
         elif token.value == '*':
             # Power
             popped = self.stack.pop()
@@ -177,8 +185,8 @@ class Interpreter:
                     self.skip(1)
                 else:
                     popped2 = self.stack.pop()
-                    popped.value = popped.value ** popped2.value
-                    self.stack.push(popped)
+                    popped2.value = popped2.value ** popped.value
+                    self.stack.push(popped2)
 
     def run(self):
         while self.pointer < len(self.tokens):
