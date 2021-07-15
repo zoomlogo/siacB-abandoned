@@ -20,6 +20,7 @@ class Interpreter:
 
         self.register = Object(0, OType.NUMBER)
 
+        self.function_location = Stack()
         self.function_call_stack = Stack()
 
         self.foreach_index = Stack()
@@ -44,7 +45,7 @@ class Interpreter:
             # Push length of stack
             obj = Object(len(self.stack), OType.NUMBER)
             self.stack.push(obj)
-        elif token.value == ':':
+        elif token.value == '.':
             # Duplicate the top of the stack
             popped = self.stack.pop()
             copy = popped.copy()

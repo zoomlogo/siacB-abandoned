@@ -7,6 +7,8 @@ class SmartStack:
         self.smart_input = input_obj
 
     def top(self):
+        if self.is_empty():
+            self.stack.append(self.smart_input.input())
         return self.stack[-1]
 
     def pop(self):
@@ -36,6 +38,9 @@ class Stack(SmartStack):
 
     def pop(self):
         return self.stack.pop()
+
+    def top(self):
+        return self.stack[-1]
     
     def __repr__(self):
         repn = '[ '
@@ -51,4 +56,7 @@ if __name__ == "__main__":
     print(stk.pop())
     print(stk)
     print(stk.pop())
+    print(stk)
+    print(stk.top())
+    print(stk)
 
