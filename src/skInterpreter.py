@@ -318,6 +318,29 @@ class Interpreter:
             if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
                 popped.value **= 3 / 4
                 self.stack.push(popped)
+        # Check datatype
+        elif token.value == '?':
+            if after[1].value == 'A':
+                # If array
+                popped = self.stack.pop()
+                obj = Object(1 if popped.type == OType.ARRAY else 0, OType.NUMBER)
+                self.stack.push(popped)
+                self.stack.push(obj)
+                self.skip(1)
+            elif after[1].value == 'S':
+                # If string
+                popped = self.stack.pop()
+                obj = Object(1 if popped.type == OType.STRING else 0, OType.NUMBER)
+                self.stack.push(popped)
+                self.stack.push(obj)
+                self.skip(1)
+            elif after[1].value == 'N':
+                # If number
+                popped = self.stack.pop()
+                obj = Object(1 if popped.type == OType.NUMBER else 0, OType.NUMBER)
+                self.stack.push(popped)
+                self.stack.push(obj)
+                self.skip(1)
 
     def run(self):
         while self.pointer < len(self.tokens):
