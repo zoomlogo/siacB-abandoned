@@ -191,6 +191,12 @@ class Parser:
                     "end": i + if_end
                 }
                 token.update(misc)
+            elif char == 'λ':
+                function_end = get_index_token(after, ';')
+                misc = {
+                    "end": function_end
+                }
+                token.update(misc)
 
 
             i += 1

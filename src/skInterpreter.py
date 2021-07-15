@@ -20,7 +20,7 @@ class Interpreter:
 
         self.register = Object(0, OType.NUMBER)
 
-        self.function_location = Stack()
+        self.function_location = {}
         self.function_call_stack = Stack()
 
         self.foreach_index = Stack()
@@ -314,6 +314,18 @@ class Interpreter:
                 self.stack.push(popped)
                 self.stack.push(obj)
                 self.skip(1)
+        # functions
+        elif token.value == 'λ':
+            # function definion
+            self.function_location[after[1].value] = self.pointer + 1
+            self.skip(token.misc['end'])
+        elif token.value == '@':
+            # function call
+            self.function_call_stack.push(self.pointer)
+            self.pointer = self.function_location[after[1].value]
+        elif token.value == ';':
+            # function return
+            self.pointer = self.function_call_stack.pop()
 
     def run(self):
         while self.pointer < len(self.tokens):
