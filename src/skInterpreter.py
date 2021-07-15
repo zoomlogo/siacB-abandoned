@@ -314,6 +314,47 @@ class Interpreter:
                 self.stack.push(popped)
                 self.stack.push(obj)
                 self.skip(1)
+        # comparision operators
+        elif token.value == '=':
+            # Equality
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER:
+                if after[1].type == TType.NUMBER:
+                    obj = Object(1 if popped.value == after[1].value else 0, OType.NUMBER)
+                    self.stack.push(obj)
+                    self.skip(1)
+                else:
+                    popped2 = self.stack.pop()
+                    obj = Object(1 if popped.value == popped2.value else 0, OType.NUMBER)
+                    self.stack.push(obj)
+            elif popped.type == OType.ARRAY:
+                popped2 = self.stack.pop()
+                obj = Object(1 if np.array_equal(popped.value, popped2.value) else 0, OType.NUMBER)
+                self.stack.push(obj)
+            elif popped.type == OType.STRING:
+                    popped2 = self.stack.pop()
+                    obj = Object(1 if popped.value == popped2.value else 0, OType.NUMBER)
+                    self.stack.push(obj)
+        elif token.value == '≠':
+            # !Equality
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER:
+                if after[1].type == TType.NUMBER:
+                    obj = Object(1 if popped.value != after[1].value else 0, OType.NUMBER)
+                    self.stack.push(obj)
+                    self.skip(1)
+                else:
+                    popped2 = self.stack.pop()
+                    obj = Object(1 if popped.value == popped2.value else 0, OType.NUMBER)
+                    self.stack.push(obj)
+            elif popped.type == OType.ARRAY:
+                popped2 = self.stack.pop()
+                obj = Object(1 if not np.array_equal(popped.value, popped2.value) else 0, OType.NUMBER)
+                self.stack.push(obj)
+            elif popped.type == OType.STRING:
+                    popped2 = self.stack.pop()
+                    obj = Object(1 if popped.value != popped2.value else 0, OType.NUMBER)
+                    self.stack.push(obj)
         # functions
         elif token.value == 'λ':
             # function definion
