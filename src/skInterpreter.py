@@ -47,9 +47,8 @@ class Interpreter:
             self.stack.push(obj)
         elif token.value == '.':
             # Duplicate the top of the stack
-            popped = self.stack.pop()
-            copy = popped.copy()
-            self.stack.push(popped)
+            top = self.stack.top()
+            copy = top.copy()
             self.stack.push(copy)
         elif token.value == ',':
             # Pop and discard the top of the stack
@@ -60,11 +59,10 @@ class Interpreter:
         elif token.value == '$':
             # Duplicate the top 2 elements (in order)
             popped = self.stack.pop()
-            popped2 = self.stack.pop()
+            top = self.stack.top()
             copy = popped.copy()
-            copy2 = popped2.copy()
+            copy2 = top.copy()
             self.stack.push(popped)
-            self.stack.push(popped2)
             self.stack.push(copy)
             self.stack.push(copy2)
         elif token.value == '\'':
@@ -117,13 +115,9 @@ class Interpreter:
                     self.stack.push(popped)
                     self.skip(1)
                 else:
-                    popped2 = self.stack.pop()
-                    popped2.value += popped.value
-                    self.stack.push(popped2)
+                    self.stack.top().value += popped.value
             elif popped.type == OType.STRING:
-                popped2 = self.stack.pop()
-                popped2.value += popped.value
-                self.stack.push(popped2)
+                self.stack.top().value += popped.value
         elif token.value == '-':
             # Subtract
             popped = self.stack.pop()
@@ -133,9 +127,7 @@ class Interpreter:
                     self.stack.push(popped)
                     self.skip(1)
                 else:
-                    popped2 = self.stack.pop()
-                    popped2.value -= popped.value
-                    self.stack.push(popped2)
+                    self.stack.top().value -= popped.value
         elif token.value == '×':
             # Multiply
             popped = self.stack.pop()
@@ -145,13 +137,9 @@ class Interpreter:
                     self.stack.push(popped)
                     self.skip(1)
                 else:
-                    popped2 = self.stack.pop()
-                    popped2.value *= popped.value
-                    self.stack.push(popped2)
+                    self.stack.top().value *= popped.value
             elif popped.type == OType.STRING:
-                popped2 = self.stack.pop()
-                popped2.value *= popped.value
-                self.stack.push(popped2)
+                self.stack.top().value *= popped.value
         elif token.value == '÷':
             # Divide
             popped = self.stack.pop()
@@ -161,9 +149,7 @@ class Interpreter:
                     self.stack.push(popped)
                     self.skip(1)
                 else:
-                    popped2 = self.stack.pop()
-                    popped2.value /= popped.value
-                    self.stack.push(popped2)
+                    self.stack.top().value /= popped.value
         elif token.value == '%':
             # Modulo
             popped = self.stack.pop()
@@ -173,9 +159,7 @@ class Interpreter:
                     self.stack.push(popped)
                     self.skip(1)
                 else:
-                    popped2 = self.stack.pop()
-                    popped2.value %= popped.value
-                    self.stack.push(popped2)
+                    self.stack.top().value %= popped.value
         elif token.value == '*':
             # Power
             popped = self.stack.pop()
@@ -185,9 +169,7 @@ class Interpreter:
                     self.stack.push(popped)
                     self.skip(1)
                 else:
-                    popped2 = self.stack.pop()
-                    popped2.value **= popped.value
-                    self.stack.push(popped2)
+                    self.stack.top().value **= popped.value
         # Bitwise (very wise indeed) operators
         elif token.value == '»':
             # Bitshift right
@@ -198,9 +180,7 @@ class Interpreter:
                     self.stack.push(popped)
                     self.skip(1)
                 else:
-                    popped2 = self.stack.pop()
-                    popped2.value >>= popped.value
-                    self.stack.push(popped2)
+                    self.stack.top().value >>= popped.value
         elif token.value == '«':
             # Bitshift right
             popped = self.stack.pop()
@@ -210,30 +190,22 @@ class Interpreter:
                     self.stack.push(popped)
                     self.skip(1)
                 else:
-                    popped2 = self.stack.pop()
-                    popped2.value <<= popped.value
-                    self.stack.push(popped2)
+                    self.stack.top().value <<= popped.value
         elif token.value == '&':
             # Bitwise and
             popped = self.stack.pop()
             if popped.type == OType.NUMBER:
-                popped2 = self.stack.pop()
-                popped2.value &= popped.value
-                self.stack.push(popped2)
+                self.stack.top().value &= popped.value
         elif token.value == '|':
             # Bitwise or
             popped = self.stack.pop()
             if popped.type == OType.NUMBER:
-                popped2 = self.stack.pop()
-                popped2.value |= popped.value
-                self.stack.push(popped2)
+                self.stack.top().value |= popped.value
         elif token.value == '^':
             # Bitwise xor
             popped = self.stack.pop()
             if popped.type == OType.NUMBER:
-                popped2 = self.stack.pop()
-                popped2.value ^= popped.value
-                self.stack.push(popped2)
+                self.stack.top().value ^= popped.value
         elif token.value == '~':
             # Bitwise not
             popped = self.stack.pop()
