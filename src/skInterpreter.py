@@ -95,24 +95,14 @@ class Interpreter:
             return
         value1 = popped.value
         value2 = popped2.value
-        if operation == '+':
-            # Addition
-            result = value2 + value1
-        elif operation == '-':
-            # Subtraction
-            result = value2 - value1
-        elif operation == '×':
-            # Multiply
-            result = value2 * value1
-        elif operation == '÷':
-            # Divide
-            result = value2 / value1
-        elif operation == '%':
-            # Modulo
-            result = value2 % value1
-        elif operation == '*':
-            # Power
-            result = value2 ** value1
+        result = {
+            "+": lambda x, y: x + y,
+            "-": lambda x, y: x - y,
+            "×": lambda x, y: x * y,
+            "÷": lambda x, y: x / y,
+            "*": lambda x, y: x ** y,
+            "%": lambda x, y: x % y
+        }[operation](value1, value2)
         type = OType.NUMBER
         if isinstance(result, np.ndarray):
             type = OType.ARRAY
