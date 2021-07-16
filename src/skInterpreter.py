@@ -79,7 +79,7 @@ class Interpreter:
             stack.push(popped2)
             stack.push(popped)
 
-    def arithemetic_operations(self, operation, after):
+    def perform_arithemetic_operation(self, operation, after):
         result = 0
         # Get 2 values to operate on
         popped = self.stack.pop()
@@ -172,7 +172,7 @@ class Interpreter:
             self.stack.push(self.register)
         # Arithmetic oprations
         elif token.type == TType.COMMAND and token.value in "+-×÷%*":
-            self.arithemetic_operations(token.value, after)
+            self.perform_arithemetic_operation(token.value, after)
         # Bitwise (very wise indeed) operators
         elif token.value == '»':
             # Bitshift right
