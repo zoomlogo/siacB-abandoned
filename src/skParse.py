@@ -99,7 +99,7 @@ class Parser:
             char = self.code[self.code_pointer]
             after = self.code[self.code_pointer:]
 
-            if char in "0123456789.":
+            if char in "0123456789":
                 number_end = get_end_group(after, "0123456789.e")
                 number = self.code[self.code_pointer:self.code_pointer + number_end]
                 try:

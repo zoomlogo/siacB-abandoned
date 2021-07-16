@@ -16,6 +16,7 @@ class Interpreter:
         self.smart_input = SmartInput(inputs)
 
         self.stack = SmartStack(self.smart_input)
+        self.second_stack = Stack()
         self.pointer = 0
 
         self.register = Object(0, OType.NUMBER)
@@ -39,38 +40,55 @@ class Interpreter:
         # Skip (add amt to the pointer)
         self.pointer += amt
 
-    def execute_token(self, token, after, before):
-        # Stack operations
-        if token.value == '_':
-            # Push length of stack
-            obj = Object(len(self.stack), OType.NUMBER)
-            self.stack.push(obj)
-        elif token.value == '.':
+    def do_stack_operation(self, stack, operation):
+        if operation == '_':
+            # Push length to stack
+            obj = Object(len(stack), OType.NUMBER)
+            stack.push(obj)
+        elif operation == '.':
             # Duplicate the top of the stack
-            top = self.stack.top()
+            top = stack.top()
             copy = top.copy()
-            self.stack.push(copy)
-        elif token.value == ',':
+            stack.push(copy)
+        elif operation == ',':
             # Pop and discard the top of the stack
-            self.stack.pop()
-        elif token.value == '⇅':
+            stack.pop()
+        elif operation == '⇅':
             # Reverse stack
-            self.stack.stack = self.stack.stack[::-1]
-        elif token.value == '$':
+            stack.stack = stack.stack[::-1]
+        elif operation == '$':
             # Duplicate the top 2 elements (in order)
-            popped = self.stack.pop()
-            top = self.stack.top()
+            popped = stack.pop()
+            top = stack.top()
             copy = popped.copy()
             copy2 = top.copy()
-            self.stack.push(popped)
-            self.stack.push(copy)
-            self.stack.push(copy2)
-        elif token.value == '\'':
+            stack.push(popped)
+            stack.push(copy)
+            stack.push(copy2)
+        elif operation == '\'':
             # Reverse the top 2 elements
-            popped = self.stack.pop()
-            popped2 = self.stack.pop()
-            self.stack.push(popped2)
-            self.stack.push(popped)
+            popped = stack.pop()
+            popped2 = stack.pop()
+            stack.push(popped2)
+            stack.push(popped)
+
+    def execute_token(self, token, after, before):
+        # Stack operations
+        if token.type == TType.COMMAND and token.value in '_.,⇅$\'':
+            self.do_stack_operation(self.stack, token.value)
+        # 2nd stack operations
+        elif token.value == 'ś':
+            if after[1].value == 'P':
+                # Push
+                popped = self.stack.pop()
+                self.second_stack.push(popped)
+            elif after[1].value == 'p':
+                # Pop
+                popped = self.second_stack.pop()
+                self.stack.push(popped)
+            else:
+                self.do_stack_operation(self.second_stack, after[1].value)
+            self.skip(1)
         # I/O
         elif token.value == 'i':
             # Explicit input
