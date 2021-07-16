@@ -263,6 +263,12 @@ class Interpreter:
             if popped.type == OType.NUMBER:
                 popped.value = 1 - popped.value
                 self.stack.push(popped)
+        elif token.value == 'D':
+            # Divide by 1
+            popped = self.stack.pop()
+            if popped.type == OType.NUMBER:
+                popped.value = 1 / popped.value
+                self.stack.push(popped)
         elif token.value == '²':
             # Square
             popped = self.stack.pop()
