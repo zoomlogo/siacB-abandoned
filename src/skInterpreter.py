@@ -7,6 +7,7 @@ import numpy as np
 import time
 import random
 import datetime
+from math import factorial
 
 class Interpreter:
     def __init__(self, tokens, flags=[], inputs=[]):
@@ -320,6 +321,14 @@ class Interpreter:
             if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
                 popped.value **= 3 / 4
                 self.stack.push(popped)
+        elif token.value == 'M':
+            # Other
+            popped = self.stack.pop()
+            if after[1].value == '!':
+                # Factorial
+                if popped.type == OType.NUMBER:
+                    popped.value = factorial(popped.value)
+                    self.stack.push(popped)
         # Check datatype
         elif token.value == '?':
             if after[1].value == 'A':
