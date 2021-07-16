@@ -79,6 +79,46 @@ class Interpreter:
             stack.push(popped2)
             stack.push(popped)
 
+    def arithemetic_operations(self, operation, after):
+        result = 0
+        # Get 2 values to operate on
+        popped = self.stack.pop()
+        if after[1].type == TType.NUMBER:
+            popped2 = after[1].value
+            popped, popped2 = popped2, popped
+            self.skip(1)
+        else:
+            popped2 = self.stack.pop()
+        types = self.types(popped, popped2)
+        # Check if types of the 1st is string
+        if types[0] == OType.STRING or types[1] == OType.STRING:
+            return
+        value1 = popped.value
+        value2 = popped2.value
+        if operation == '+':
+            # Addition
+            result = value2 + value1
+        elif operation == '-':
+            # Subtraction
+            result = value2 - value1
+        elif operation == '×':
+            # Multiply
+            result = value2 * value1
+        elif operation == '÷':
+            # Divide
+            result = value2 / value1
+        elif operation == '%':
+            # Modulo
+            result = value2 % value1
+        elif operation == '*':
+            # Power
+            result = value2 ** value1
+        type = OType.NUMBER
+        if isinstance(result, np.array):
+            type = OType.ARRAY
+        self.stack.push(Object(result, type))
+
+
     def execute_token(self, token, after, before):
         # Stack operations
         if token.type == TType.COMMAND and token.value in '_.,⇅$\'':
@@ -118,13 +158,8 @@ class Interpreter:
                 self.skip(2)
             else:
                 self.skip(1)
-        elif token.value == '\\':
-            # Push next character
-            obj = Object(after[1].value, OType.STRING)
-            self.stack.push(obj)
-            self.skip(1)
-        elif token.value == '‛':
-            # Push next 2 characters
+        elif token.type == TType.COMMAND and token.value in '\\‛':
+            # Push characters
             obj = Object(after[1].value, OType.STRING)
             self.stack.push(obj)
             self.skip(1)
