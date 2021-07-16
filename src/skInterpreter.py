@@ -41,6 +41,12 @@ class Interpreter:
         # Skip (add amt to the pointer)
         self.pointer += amt
 
+    def types(self, *args):
+        res = []
+        for o in args:
+            res.append(o.type)
+        return res
+
     def do_stack_operation(self, stack, operation):
         if operation == '_':
             # Push length to stack
