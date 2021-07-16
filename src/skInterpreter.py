@@ -84,7 +84,7 @@ class Interpreter:
         # Get 2 values to operate on
         popped = self.stack.pop()
         if after[1].type == TType.NUMBER:
-            popped2 = after[1].value
+            popped2 = Object(after[1].value, OType.NUMBER)
             popped, popped2 = popped2, popped
             self.skip(1)
         else:
@@ -114,7 +114,7 @@ class Interpreter:
             # Power
             result = value2 ** value1
         type = OType.NUMBER
-        if isinstance(result, np.array):
+        if isinstance(result, np.ndarray):
             type = OType.ARRAY
         self.stack.push(Object(result, type))
 
@@ -171,70 +171,8 @@ class Interpreter:
             # Recall from the top of the registor
             self.stack.push(self.register)
         # Arithmetic oprations
-        elif token.value == '+':
-            # Add
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                if after[1].type == TType.NUMBER:
-                    popped.value += after[1].value
-                    self.stack.push(popped)
-                    self.skip(1)
-                else:
-                    self.stack.top().value += popped.value
-            elif popped.type == OType.STRING:
-                self.stack.top().value += popped.value
-        elif token.value == '-':
-            # Subtract
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                if after[1].type == TType.NUMBER:
-                    popped.value -= after[1].value
-                    self.stack.push(popped)
-                    self.skip(1)
-                else:
-                    self.stack.top().value -= popped.value
-        elif token.value == '×':
-            # Multiply
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                if after[1].type == TType.NUMBER:
-                    popped.value *= after[1].value
-                    self.stack.push(popped)
-                    self.skip(1)
-                else:
-                    self.stack.top().value *= popped.value
-            elif popped.type == OType.STRING:
-                self.stack.top().value *= popped.value
-        elif token.value == '÷':
-            # Divide
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                if after[1].type == TType.NUMBER:
-                    popped.value /= after[1].value
-                    self.stack.push(popped)
-                    self.skip(1)
-                else:
-                    self.stack.top().value /= popped.value
-        elif token.value == '%':
-            # Modulo
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                if after[1].type == TType.NUMBER:
-                    popped.value %= after[1].value
-                    self.stack.push(popped)
-                    self.skip(1)
-                else:
-                    self.stack.top().value %= popped.value
-        elif token.value == '*':
-            # Power
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                if after[1].type == TType.NUMBER:
-                    popped.value **= after[1].value
-                    self.stack.push(popped)
-                    self.skip(1)
-                else:
-                    self.stack.top().value **= popped.value
+        elif token.type == TType.COMMAND and token.value in "+-×÷%*":
+            self.arithemetic_operations(token.value, after)
         # Bitwise (very wise indeed) operators
         elif token.value == '»':
             # Bitshift right
