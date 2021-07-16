@@ -119,6 +119,10 @@ class Parser:
                 self.tokens.append(Token('\\', TType.COMMAND))
                 self.tokens.append(Token(after[1], TType.STRING))
                 self.code_pointer += 1
+            elif char == '‛':
+                self.tokens.append(Token('‛', TType.COMMAND))
+                self.tokens.append(Token(after[1:3], TType.STRING))
+                self.code_pointer += 2
             else:
                 self.tokens.append(Token(char, TType.COMMAND))
 
@@ -202,7 +206,7 @@ class Parser:
             i += 1
 
 if __name__ == '__main__':
-    p = Parser("`asas`")
+    p = Parser("sa‛s a")
     print("============")
     print(p.code)
     print("============")

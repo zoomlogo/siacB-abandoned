@@ -116,6 +116,11 @@ class Interpreter:
             obj = Object(after[1].value, OType.STRING)
             self.stack.push(obj)
             self.skip(1)
+        elif token.value == '‛':
+            # Push next 2 characters
+            obj = Object(after[1].value, OType.STRING)
+            self.stack.push(obj)
+            self.skip(1)
         # Register operations
         elif token.value == '©':
             # Copy the top of the stack to the register
