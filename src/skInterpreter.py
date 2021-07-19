@@ -92,19 +92,28 @@ class Interpreter:
         value1 = popped.value
         value2 = popped2.value
         result = {
-            "+": lambda x, y: x + y,
-            "-": lambda x, y: x - y,
-            "×": lambda x, y: x * y,
-            "÷": lambda x, y: x / y,
-            "*": lambda x, y: x ** y,
-            "%": lambda x, y: x % y,
-            "»": lambda x, y: x >> y,
-            "«": lambda x, y: x << y
+            "+": lambda x, y: x + y,  # Addition
+            "-": lambda x, y: x - y,  # Subtraction
+            "×": lambda x, y: x * y,  # Multiplication
+            "÷": lambda x, y: x / y,  # Division
+            "*": lambda x, y: x ** y, # Exponentiation
+            "%": lambda x, y: x % y,  # Modulo
+            "»": lambda x, y: x >> y, # Bitshift left
+            "«": lambda x, y: x << y  # Bitshift right
         }[operation](value1, value2)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
-    def perform_bitwise_operation(self, operation):
-        ...
+    def do_arity2(self, operation):
+        result = 0
+        popped, popped2 = self.stack.pop(), self.stack.pop()
+        # Perform operation
+        value1, value2 = popped.value, popped2.value
+        result = {
+            "&": lambda x, y: x & y,  # Bitwise and
+            "|": lambda x, y: x | y,  # Bitwise or
+            "^": lambda x, y: x ^ y,  # Bitwise xor
+        }[operation](value1, value2)
+        self.stack.push(self.smart_input.objectify_from_instance(result))
 
     def execute_token(self, token, after, before):
         # Stack operations
@@ -157,25 +166,12 @@ class Interpreter:
         elif token.value == '®':
             # Recall from the top of the registor
             self.stack.push(self.register)
-        # Arithmetic oprations or arity with 2 that supports infix
+        # Arity with 2 that supports infix
         elif token.type == TType.COMMAND and token.value in "+-×÷%*»«":
             self.do_arity2_with_infix_support(token.value, after)
-        # Bitwise (very wise indeed) operators
-        elif token.value == '&':
-            # Bitwise and
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                self.stack.top().value &= popped.value
-        elif token.value == '|':
-            # Bitwise or
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                self.stack.top().value |= popped.value
-        elif token.value == '^':
-            # Bitwise xor
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                self.stack.top().value ^= popped.value
+        # Arity 2 operation without infix support
+        elif token.type == TType.COMMAND and token.value in "&|^":
+            self.do_arity2(token.value)
         elif token.value == '~':
             # Bitwise not
             popped = self.stack.pop()
