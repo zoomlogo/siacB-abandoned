@@ -79,7 +79,7 @@ class Interpreter:
             stack.push(popped2)
             stack.push(popped)
 
-    def perform_arithemetic_operation(self, operation, after):
+    def do_arity2_with_infix_support(self, operation, after):
         result = 0
         # Get 2 values to operate on
         popped = self.stack.pop()
@@ -97,10 +97,14 @@ class Interpreter:
             "×": lambda x, y: x * y,
             "÷": lambda x, y: x / y,
             "*": lambda x, y: x ** y,
-            "%": lambda x, y: x % y
+            "%": lambda x, y: x % y,
+            "»": lambda x, y: x >> y,
+            "«": lambda x, y: x << y
         }[operation](value1, value2)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
+    def perform_bitwise_operation(self, operation):
+        ...
 
     def execute_token(self, token, after, before):
         # Stack operations
@@ -153,30 +157,10 @@ class Interpreter:
         elif token.value == '®':
             # Recall from the top of the registor
             self.stack.push(self.register)
-        # Arithmetic oprations
-        elif token.type == TType.COMMAND and token.value in "+-×÷%*":
-            self.perform_arithemetic_operation(token.value, after)
+        # Arithmetic oprations or arity with 2 that supports infix
+        elif token.type == TType.COMMAND and token.value in "+-×÷%*»«":
+            self.do_arity2_with_infix_support(token.value, after)
         # Bitwise (very wise indeed) operators
-        elif token.value == '»':
-            # Bitshift right
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                if after[1].type == TType.NUMBER:
-                    popped.value >>= after[1].value
-                    self.stack.push(popped)
-                    self.skip(1)
-                else:
-                    self.stack.top().value >>= popped.value
-        elif token.value == '«':
-            # Bitshift right
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                if after[1].type == TType.NUMBER:
-                    popped.value <<= after[1].value
-                    self.stack.push(popped)
-                    self.skip(1)
-                else:
-                    self.stack.top().value <<= popped.value
         elif token.value == '&':
             # Bitwise and
             popped = self.stack.pop()
