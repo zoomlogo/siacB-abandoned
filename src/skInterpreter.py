@@ -126,6 +126,8 @@ class Interpreter:
             "³": lambda x: x ** 3, # Cube
             "√": lambda x: x ** 1 / 2,  # Square root
             "∛": lambda x: x ** 1 / 3,  # Cube root
+            "¼": lambda x: x / 4,  # Divide by 4
+            "¾": lambda x: x * 3 / 4,  # Multiply by 3 / 4
         }[operation](value)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
@@ -187,7 +189,7 @@ class Interpreter:
         elif token.type == TType.COMMAND and token.value in "&|^∧∨":
             self.do_arity2(token.value)
         # Arity 1 operators
-        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛":
+        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼":
             self.do_arity1(token.value)
         elif token.value == '½':
             # Half or split in 2 equal parts
@@ -204,18 +206,6 @@ class Interpreter:
                 parts = [popped.value[:half], popped.value[half:]]
                 for p in parts:
                     self.stack.push(Object(p, OType.STRING))
-        elif token.value == '¼':
-            # Multiply be 1/4
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                popped.value *= 1 / 4
-                self.stack.push(popped)
-        elif token.value == '¾':
-            # Multiply be 3/4
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                popped.value **= 3 / 4
-                self.stack.push(popped)
         elif token.value == 'M':
             # Other
             popped = self.stack.pop()
