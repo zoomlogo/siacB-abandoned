@@ -40,6 +40,17 @@ class SmartInput:
                     pass
         return skObject.Object(value, type)
 
+    def objectify_from_instance(self, value):
+        type = None
+        if isinstance(value, int) or isinstance(value, float):
+            type = skObject.OType.NUMBER
+        elif isinstance(value, np.ndarray):
+            type = skObject.OType.ARRAY
+        elif isinstance(value, str):
+            type = skObject.OType.STRING
+
+        return skObject.Object(value, type)
+
 if __name__ == "__main__":
     inp = SmartInput()
     for i in range(10):
