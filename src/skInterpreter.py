@@ -80,7 +80,6 @@ class Interpreter:
             stack.push(popped)
 
     def do_arity2_with_infix_support(self, operation, after):
-        result = 0
         # Get 2 values to operate on
         popped = self.stack.pop()
         if after[1].type == TType.NUMBER:
@@ -104,7 +103,6 @@ class Interpreter:
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
     def do_arity2(self, operation):
-        result = 0
         popped, popped2 = self.stack.pop(), self.stack.pop()
         # Perform operation
         value1, value2 = popped.value, popped2.value
@@ -115,6 +113,20 @@ class Interpreter:
             "∧": lambda x, y: 1 if x and y else 0,  # Logical and
             "∨": lambda x, y: 1 if x or y else 0,   # Logical or
         }[operation](value1, value2)
+        self.stack.push(self.smart_input.objectify_from_instance(result))
+
+    def do_arity1(self, operation):
+        value = self.stack.pop().value
+        result = {
+            "~": lambda x: ~x,  # Bitwise not
+            "¬": lambda x: 1 if not x else 0,  # Logical not
+            "C": lambda x: 1 - x,  # Complement
+            "D": lambda x: 1 / x,  # Divide by 1
+            "²": lambda x: x ** 2, # Square
+            "³": lambda x: x ** 3, # Cube
+            "√": lambda x: x ** 1 / 2,  # Square root
+            "∛": lambda x: x ** 1 / 3,  # Cube root
+        }[operation](value)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
     def execute_token(self, token, after, before):
@@ -174,56 +186,9 @@ class Interpreter:
         # Arity 2 operation without infix support
         elif token.type == TType.COMMAND and token.value in "&|^∧∨":
             self.do_arity2(token.value)
-        elif token.value == '~':
-            # Bitwise not
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                popped.value = ~popped.value
-                self.stack.push(popped)
-        # Logical operators
-        elif token.value == '¬':
-            # logical not
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                obj = Object(1 if not popped.value else 0, OType.NUMBER)
-                self.stack.push(obj)
-        # More number things
-        elif token.value == 'C':
-            # Complement
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                popped.value = 1 - popped.value
-                self.stack.push(popped)
-        elif token.value == 'D':
-            # Divide by 1
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                popped.value = 1 / popped.value
-                self.stack.push(popped)
-        elif token.value == '²':
-            # Square
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                popped.value **= 2
-                self.stack.push(popped)
-        elif token.value == '³':
-            # Cube
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                popped.value **= 3
-                self.stack.push(popped)
-        elif token.value == '√':
-            # Square root
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                popped.value **= 0.5
-                self.stack.push(popped)
-        elif token.value == '∛':
-            # Cube root
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER or popped.type == OType.ARRAY:
-                popped.value **= 1 / 3
-                self.stack.push(popped)
+        # Arity 1 operators
+        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛":
+            self.do_arity1(token.value)
         elif token.value == '½':
             # Half or split in 2 equal parts
             popped = self.stack.pop()
