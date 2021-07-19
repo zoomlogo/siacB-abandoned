@@ -99,7 +99,7 @@ class Interpreter:
             "*": lambda x, y: x ** y, # Exponentiation
             "%": lambda x, y: x % y,  # Modulo
             "»": lambda x, y: x >> y, # Bitshift left
-            "«": lambda x, y: x << y  # Bitshift right
+            "«": lambda x, y: x << y, # Bitshift right
         }[operation](value1, value2)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
@@ -112,6 +112,8 @@ class Interpreter:
             "&": lambda x, y: x & y,  # Bitwise and
             "|": lambda x, y: x | y,  # Bitwise or
             "^": lambda x, y: x ^ y,  # Bitwise xor
+            "∧": lambda x, y: 1 if x and y else 0,  # Logical and
+            "∨": lambda x, y: 1 if x or y else 0,   # Logical or
         }[operation](value1, value2)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
@@ -170,7 +172,7 @@ class Interpreter:
         elif token.type == TType.COMMAND and token.value in "+-×÷%*»«":
             self.do_arity2_with_infix_support(token.value, after)
         # Arity 2 operation without infix support
-        elif token.type == TType.COMMAND and token.value in "&|^":
+        elif token.type == TType.COMMAND and token.value in "&|^∧∨":
             self.do_arity2(token.value)
         elif token.value == '~':
             # Bitwise not
@@ -179,20 +181,6 @@ class Interpreter:
                 popped.value = ~popped.value
                 self.stack.push(popped)
         # Logical operators
-        elif token.value == '∧':
-            # logical and
-            popped = self.stack.pop()
-            popped2 = self.stack.pop()
-            if popped.type == OType.NUMBER and popped2.type == OType.NUMBER:
-                obj = Object(1 if popped.value and popped2.value else 0, OType.NUMBER)
-                self.stack.push(obj)
-        elif token.value == '∨':
-            # logical or
-            popped = self.stack.pop()
-            popped2 = self.stack.pop()
-            if popped.type == OType.NUMBER and popped2.type == OType.NUMBER:
-                obj = Object(1 if popped.value or popped2.value else 0, OType.NUMBER)
-                self.stack.push(obj)
         elif token.value == '¬':
             # logical not
             popped = self.stack.pop()
