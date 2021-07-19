@@ -89,10 +89,6 @@ class Interpreter:
             self.skip(1)
         else:
             popped2 = self.stack.pop()
-        types = self.types(popped, popped2)
-        # Check if types of the 1st is string
-        if types[0] == OType.STRING or types[1] == OType.STRING:
-            return
         value1 = popped.value
         value2 = popped2.value
         result = {
