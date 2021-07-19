@@ -99,10 +99,7 @@ class Interpreter:
             "*": lambda x, y: x ** y,
             "%": lambda x, y: x % y
         }[operation](value1, value2)
-        type = OType.NUMBER
-        if isinstance(result, np.ndarray):
-            type = OType.ARRAY
-        self.stack.push(Object(result, type))
+        self.stack.push(self.smart_input.objectify_from_instance(result))
 
 
     def execute_token(self, token, after, before):
