@@ -316,6 +316,9 @@ class Interpreter:
                 self.pointer = token.misc["end"]
         elif token.value == ')':
             self.pointer = token.misc["start"] - 1
+        # For each
+        elif token.value == ']':
+            self.pointer = token.misc["start"] - 1
         # functions
         elif token.value == 'λ':
             # function definion
