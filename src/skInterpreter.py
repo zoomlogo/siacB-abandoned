@@ -74,6 +74,18 @@ class Interpreter:
         else:
             return np.rot90(value)
 
+    def command_eq(self, value1, value2):
+        type1, type2 = self.types_from_instance(value1, value2)
+
+        if type1 == OType.ARRAY and type2 == OType.ARRAY:
+            return 1 if np.array_equal(value1, value2) else 0
+        else:
+            return 1 if value1 == value2 else 0
+
+    def command_neq(self, value1, value2):
+        return 0 if self.command_eq(value1, value2) else 1
+            
+
     def do_stack_operation(self, stack, operation):
         if operation == '_':
             # Push length to stack
@@ -139,6 +151,12 @@ class Interpreter:
             "^": lambda x, y: x ^ y,  # Bitwise xor
             "∧": lambda x, y: 1 if x and y else 0,  # Logical and
             "∨": lambda x, y: 1 if x or y else 0,   # Logical or
+            "=": self.command_eq,   # equal
+            "≠": self.command_neq,  # not equal
+            ">": lambda x, y: 1 if x > y else 0,
+            "<": lambda x, y: 1 if x < y else 0,
+            "≥": lambda x, y: 1 if x >= y else 0,
+            "≤": lambda x, y: 1 if x <= y else 0,
         }[operation](value1, value2)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
@@ -231,7 +249,7 @@ class Interpreter:
         elif token.type == TType.COMMAND and token.value in "+-×÷%*»«":
             self.do_arity2_with_infix_support(token.value, after)
         # Arity 2 operation without infix support
-        elif token.type == TType.COMMAND and token.value in "&|^∧∨":
+        elif token.type == TType.COMMAND and token.value in "&|^∧∨=≠><≥≤":
             self.do_arity2(token.value)
         # Arity 1 operators
         elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼LrR":
@@ -278,47 +296,6 @@ class Interpreter:
                 self.stack.push(popped)
                 self.stack.push(obj)
                 self.skip(1)
-        # comparision operators
-        elif token.value == '=':
-            # Equality
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                if after[1].type == TType.NUMBER:
-                    obj = Object(1 if popped.value == after[1].value else 0, OType.NUMBER)
-                    self.stack.push(obj)
-                    self.skip(1)
-                else:
-                    popped2 = self.stack.pop()
-                    obj = Object(1 if popped.value == popped2.value else 0, OType.NUMBER)
-                    self.stack.push(obj)
-            elif popped.type == OType.ARRAY:
-                popped2 = self.stack.pop()
-                obj = Object(1 if np.array_equal(popped.value, popped2.value) else 0, OType.NUMBER)
-                self.stack.push(obj)
-            elif popped.type == OType.STRING:
-                    popped2 = self.stack.pop()
-                    obj = Object(1 if popped.value == popped2.value else 0, OType.NUMBER)
-                    self.stack.push(obj)
-        elif token.value == '≠':
-            # !Equality
-            popped = self.stack.pop()
-            if popped.type == OType.NUMBER:
-                if after[1].type == TType.NUMBER:
-                    obj = Object(1 if popped.value != after[1].value else 0, OType.NUMBER)
-                    self.stack.push(obj)
-                    self.skip(1)
-                else:
-                    popped2 = self.stack.pop()
-                    obj = Object(1 if popped.value == popped2.value else 0, OType.NUMBER)
-                    self.stack.push(obj)
-            elif popped.type == OType.ARRAY:
-                popped2 = self.stack.pop()
-                obj = Object(1 if not np.array_equal(popped.value, popped2.value) else 0, OType.NUMBER)
-                self.stack.push(obj)
-            elif popped.type == OType.STRING:
-                    popped2 = self.stack.pop()
-                    obj = Object(1 if popped.value != popped2.value else 0, OType.NUMBER)
-                    self.stack.push(obj)
         # functions
         elif token.value == 'λ':
             # function definion
