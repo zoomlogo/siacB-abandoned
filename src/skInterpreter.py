@@ -47,6 +47,33 @@ class Interpreter:
             res.append(o.type)
         return res
 
+    def types_from_instance(self, *args):
+        res = []
+        for i in args:
+            if isinstance(i, int) or isinstance(i, float):
+                res.append(OType.NUMBER)
+            elif isinstance(i, np.ndarray):
+                res.append(OType.ARRAY)
+            elif isinstance(i, str):
+                res.append(OType.STRING)
+        return res
+
+    def command_r(self, value):
+        type = self.types_from_instance(value)[0]
+
+        if type == OType.NUMBER:
+            return list(range(value))
+        else:
+            return random.choice(value)
+
+    def command_R(self, value):
+        type = self.types_from_instance(value)[0]
+
+        if type == OType.NUMBER:
+            return list(range(1, value + 1))
+        else:
+            return np.rot90(value)
+
     def do_stack_operation(self, stack, operation):
         if operation == '_':
             # Push length to stack
@@ -128,7 +155,9 @@ class Interpreter:
             "∛": lambda x: x ** 1 / 3,  # Cube root
             "¼": lambda x: x / 4,  # Divide by 4
             "¾": lambda x: x * 3 / 4,  # Multiply by 3 / 4
-            "L": lambda x: len(x),
+            "L": lambda x: len(x),  # Len
+            "r": self.command_r,    # Range or random.choice
+            "R": self.command_R,    # Range 1..n or rot90
         }[operation](value)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
@@ -205,7 +234,7 @@ class Interpreter:
         elif token.type == TType.COMMAND and token.value in "&|^∧∨":
             self.do_arity2(token.value)
         # Arity 1 operators
-        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼L":
+        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼LrR":
             self.do_arity1(token.value)
         elif token.value == '½':
             # Half or split in 2 equal parts
