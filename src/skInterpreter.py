@@ -131,6 +131,18 @@ class Interpreter:
         }[operation](value)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
+    def math_operation(self, operation):
+        value = self.stack.pop().value
+        result = {
+            "s": lambda x: np.sin(x),
+            "c": lambda x: np.cos(x),
+            "t": lambda x: np.tan(x),
+            "S": lambda x: np.arcsin(x),
+            "C": lambda x: np.arccos(x),
+            "T": lambda x: np.arctan(x),
+        }[operation](value)
+        self.stack.push(self.smart_input.objectify_from_instance(result))
+
     def execute_token(self, token, after, before):
         # Stack operations
         if token.type == TType.COMMAND and token.value in '_.,⇅$\'':
@@ -207,13 +219,9 @@ class Interpreter:
                 for p in parts:
                     self.stack.push(Object(p, OType.STRING))
         elif token.value == 'M':
-            # Other
-            popped = self.stack.pop()
-            if after[1].value == '!':
-                # Factorial
-                if popped.type == OType.NUMBER:
-                    popped.value = factorial(popped.value)
-                    self.stack.push(popped)
+            # Other math
+            self.math_operation(after[1].value)
+            self.skip(1)
         # Check datatype
         elif token.value == '?':
             if after[1].value == 'A':
