@@ -297,7 +297,15 @@ class Interpreter:
                 self.stack.push(obj)
                 self.skip(1)
         # if statements
-
+        elif token.value == '{':
+            popped = self.stack.pop()
+            if not popped.value:
+                if token.misc["else"] != None:
+                    self.pointer = token.misc["else"]
+                else:
+                    self.pointer = token.misc["end"]
+        elif token.value == ':':
+            self.pointer = token.misc["end"]
         # functions
         elif token.value == 'λ':
             # function definion
