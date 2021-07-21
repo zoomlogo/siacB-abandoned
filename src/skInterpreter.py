@@ -128,6 +128,7 @@ class Interpreter:
             "∛": lambda x: x ** 1 / 3,  # Cube root
             "¼": lambda x: x / 4,  # Divide by 4
             "¾": lambda x: x * 3 / 4,  # Multiply by 3 / 4
+            "L": lambda x: len(x),
         }[operation](value)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
@@ -204,7 +205,7 @@ class Interpreter:
         elif token.type == TType.COMMAND and token.value in "&|^∧∨":
             self.do_arity2(token.value)
         # Arity 1 operators
-        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼":
+        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼L":
             self.do_arity1(token.value)
         elif token.value == '½':
             # Half or split in 2 equal parts
