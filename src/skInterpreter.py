@@ -140,6 +140,9 @@ class Interpreter:
             "S": lambda x: np.arcsin(x),
             "C": lambda x: np.arccos(x),
             "T": lambda x: np.arctan(x),
+            "l": lambda x: np.log10(x),
+            "L": lambda x: np.log(x),
+            "!": lambda x: factorial(x),
         }[operation](value)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
