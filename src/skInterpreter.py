@@ -296,6 +296,8 @@ class Interpreter:
                 self.stack.push(popped)
                 self.stack.push(obj)
                 self.skip(1)
+        # if statements
+
         # functions
         elif token.value == 'λ':
             # function definion

@@ -181,16 +181,16 @@ class Parser:
             elif char == '{':
                 # If statement
                 if_end = get_close_token(after, '{', '}')
-                else_end = get_close_token(after, '{', '#')
+                else_end = get_close_token(after, '{', ':')
                 misc = {
                     "start": i,
                     "else": i + else_end if else_end is not None else None,
                     "end": i + if_end
                 }
                 token.update(misc)
-            elif char == '#':
+            elif char == ':':
                 # If else statement
-                if_end = get_close_token(after, '#', '}')
+                if_end = get_close_token(after, ':', '}')
                 misc = {
                     "end": i + if_end
                 }
