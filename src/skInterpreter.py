@@ -296,7 +296,7 @@ class Interpreter:
             self.skip(token.misc['end'])
         elif token.value == '@':
             # function call
-            self.function_call_stack.push(self.pointer)
+            self.function_call_stack.push(self.pointer + 1)
             self.pointer = self.function_location[after[1].value]
         elif token.value == ';':
             # function return
