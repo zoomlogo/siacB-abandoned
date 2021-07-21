@@ -138,7 +138,7 @@ class Interpreter:
             "%": lambda x, y: x % y,  # Modulo
             "»": lambda x, y: x >> y, # Bitshift left
             "«": lambda x, y: x << y, # Bitshift right
-        }[operation](value1, value2)
+        }[operation](value2, value1)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
     def do_arity2(self, operation):
@@ -310,6 +310,12 @@ class Interpreter:
         elif token.value == '⁇':
             if not self.stack.top().value:
                 self.skip(1)
+        # while loop
+        elif token.value == '(':
+            if not self.stack.top().value:
+                self.pointer = token.misc["end"]
+        elif token.value == ')':
+            self.pointer = token.misc["start"] - 1
         # functions
         elif token.value == 'λ':
             # function definion
