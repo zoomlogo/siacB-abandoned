@@ -306,6 +306,10 @@ class Interpreter:
                     self.pointer = token.misc["end"]
         elif token.value == ':':
             self.pointer = token.misc["end"]
+        # skip next if
+        elif token.value == '⁇':
+            if not self.stack.top().value:
+                self.skip(1)
         # functions
         elif token.value == 'λ':
             # function definion
