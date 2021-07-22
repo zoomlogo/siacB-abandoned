@@ -157,6 +157,7 @@ class Interpreter:
             "<": lambda x, y: 1 if x < y else 0,
             "≥": lambda x, y: 1 if x >= y else 0,
             "≤": lambda x, y: 1 if x <= y else 0,
+            '"': lambda x, y: np.array([x, y]),  # Pair
         }[operation](value1, value2)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
@@ -173,6 +174,10 @@ class Interpreter:
             "∛": lambda x: x ** 1 / 3,  # Cube root
             "¼": lambda x: x / 4,  # Divide by 4
             "¾": lambda x: x * 3 / 4,  # Multiply by 3 / 4
+            "±": lambda x: -x,      # Negate
+            "‖": lambda x: abs(x),  # ABS
+            "∏": lambda x: np.ceil(x), # Ceil
+            "∐": lambda x: np.floor(x), # Floor
             "L": lambda x: len(x),  # Len
             "r": self.command_r,    # Range or random.choice
             "R": self.command_R,    # Range 1..n or rot90
@@ -273,10 +278,10 @@ class Interpreter:
         elif token.type == TType.COMMAND and token.value in "+-×÷%*»«":
             self.do_arity2_with_infix_support(token.value, after)
         # Arity 2 operation without infix support
-        elif token.type == TType.COMMAND and token.value in "&|^∧∨=≠><≥≤":
+        elif token.type == TType.COMMAND and token.value in "&|^∧∨=≠><≥≤\"":
             self.do_arity2(token.value)
         # Arity 1 operators
-        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼LrRI":
+        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼LrRI±‖∏∐":
             self.do_arity1(token.value)
         elif token.value == '½':
             # Half or split in 2 equal parts
