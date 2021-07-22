@@ -195,6 +195,10 @@ class Interpreter:
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
     def execute_token(self, token, after, before):
+        # for each reset
+        if len(before) > 0 and before[-1].value == ']':
+            self.foreach_index.pop()
+            self.foreach_object.pop()
         # Stack operations
         if token.type == TType.COMMAND and token.value in '_.,⇅$\'':
             self.do_stack_operation(self.stack, token.value)
@@ -317,6 +321,20 @@ class Interpreter:
         elif token.value == ')':
             self.pointer = token.misc["start"] - 1
         # For each
+        elif token.value == '[':
+            if len(self.foreach_object) < token.misc["idl"]:
+                self.foreach_object.push(self.stack.pop())
+                self.foreach_index.push(1)
+                if self.foreach_object.top().type == OType.NUMBER:
+                    popped = self.foreach_object.pop()
+                    self.foreach_object.push(self.smart_input.objectify_from_instance(list(range(popped.value, 0, -1))))
+                self.stack.push(self.smart_input.objectify_from_instance(self.foreach_object.top().value[0]))
+            else:
+                if self.foreach_index.top() < len(self.foreach_object.top().value):
+                    self.stack.push(self.smart_input.objectify_from_instance(self.foreach_object.top().value[self.foreach_index.top()]))
+                    self.foreach_index.stack[-1] += 1
+                else:
+                    self.pointer = token.misc["end"]
         elif token.value == ']':
             self.pointer = token.misc["start"] - 1
         # functions
