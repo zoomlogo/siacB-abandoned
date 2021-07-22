@@ -1,3 +1,4 @@
+from numpy.core.shape_base import stack
 from skInput import SmartInput
 
 # Main stack
@@ -31,6 +32,12 @@ class SmartStack:
             repn += repr(obj.value)
             repn += ' '
         return repn + "]"
+
+    def update(self, new):
+        self.stack = [new]
+
+    def values(self):
+        return [o.value for o in self.stack]
 
 class Stack(SmartStack):
     def __init__(self):
