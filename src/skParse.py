@@ -89,8 +89,8 @@ class Parser:
                 # Single char skip
                 code += '\\' + after[1]
                 i += 1
-            elif char == ' ' or char == '\n':
-                # Skip newlines and spaces
+            elif char == '\n':
+                # Skip newlines
                 pass
             else:
                 # Otherwise
