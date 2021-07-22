@@ -176,6 +176,7 @@ class Interpreter:
             "L": lambda x: len(x),  # Len
             "r": self.command_r,    # Range or random.choice
             "R": self.command_R,    # Range 1..n or rot90
+            "I": lambda x: np.eye(x),    # Identity matrix
         }[operation](value)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
@@ -275,7 +276,7 @@ class Interpreter:
         elif token.type == TType.COMMAND and token.value in "&|^∧∨=≠><≥≤":
             self.do_arity2(token.value)
         # Arity 1 operators
-        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼LrR":
+        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼LrRI":
             self.do_arity1(token.value)
         elif token.value == '½':
             # Half or split in 2 equal parts
