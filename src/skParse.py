@@ -52,6 +52,13 @@ def get_close_token(tokens, open, close):
 
     return end_index
 
+def indent_level(tokens, open, close):
+    k = 0
+    for token in tokens:
+        if token.value == open: k += 1
+        elif token.value == close: k -= 1
+    return k + 1
+
 class Parser:
     def __init__(self, code):
         self.code = code
@@ -142,6 +149,7 @@ class Parser:
         while i < len(self.tokens):
             token = self.tokens[i]
             after = self.tokens[i:]
+            before = self.tokens[:i]
             char = token.value
 
             if char == '(':
@@ -164,9 +172,11 @@ class Parser:
             if char == '[':
                 # foreach loop
                 foreach_loop_end = get_close_token(after, '[', ']')
+                ind_lvl = indent_level(before, '[', ']')
                 misc = {
                     "start": i,
-                    "end": i + foreach_loop_end
+                    "end": i + foreach_loop_end,
+                    "idl": ind_lvl
                 }
                 token.update(misc)
             elif char == ']':
@@ -206,7 +216,7 @@ class Parser:
             i += 1
 
 if __name__ == '__main__':
-    p = Parser("sa‛s a")
+    p = Parser("[][][[]]")
     print("============")
     print(p.code)
     print("============")
