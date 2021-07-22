@@ -160,6 +160,7 @@ class Interpreter:
             '"': lambda x, y: np.array([x, y]),  # Pair
             "c": lambda x, y: 1 if x in y else 0, # belongs to
             "Ī": lambda x, y: x[y], # Index
+            "Ś": lambda x, y: x[y[0]:y[1]], # Splice
         }[operation](value1, value2)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
@@ -286,7 +287,7 @@ class Interpreter:
         elif token.type == TType.COMMAND and token.value in "+-×÷%*»«":
             self.do_arity2_with_infix_support(token.value, after)
         # Arity 2 operation without infix support
-        elif token.type == TType.COMMAND and token.value in "&|^∧∨=≠><≥≤\"cĪ":
+        elif token.type == TType.COMMAND and token.value in "&|^∧∨=≠><≥≤\"cĪŚ":
             self.do_arity2(token.value)
         # Arity 1 operators
         elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼LrRI±‖∏∐STFBJ":
