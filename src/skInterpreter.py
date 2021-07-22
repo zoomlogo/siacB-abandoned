@@ -339,6 +339,10 @@ class Interpreter:
         elif token.value == 'W':
             values = self.stack.values()
             self.stack.update(self.smart_input.objectify_from_instance(np.array(values)))
+        elif token.value == 'U':
+            value = self.stack.pop().value
+            for i in value:
+                self.stack.push(self.smart_input.objectify_from_instance(i))
         # if statements
         elif token.value == '{':
             popped = self.stack.pop()
