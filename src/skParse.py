@@ -74,7 +74,7 @@ class Parser:
             char = self.code[i]
             after = self.code[i:] # After the character
             # Check for comments
-            if char == '⯈':
+            if char == '#':
                 # Ignore everything until newline
                 comment_end = after.index('\n')
                 i += comment_end
