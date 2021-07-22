@@ -194,6 +194,24 @@ class Interpreter:
         }[operation](value)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
+    def konstants(self, k):
+        result = {
+            "1": 1000,
+            "2": 10000,
+            "3": 100000,
+            "4": 1000000,
+            "5": 10000000,
+            "A": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "a": "abcdefghijklmnopqrstuvwxyz",
+            "e": np.e,
+            "p": np.pi,
+            "s": datetime.datetime.now().second,
+            "m": datetime.datetime.now().microsecond,
+            "M": datetime.datetime.now().minute,
+            "w": "www",
+        }[k]
+        self.stack.push(self.smart_input.objectify_from_instance(result))
+
     def execute_token(self, token, after, before):
         # for each reset
         if len(before) > 0 and before[-1].value == ']':
@@ -276,6 +294,10 @@ class Interpreter:
         elif token.value == 'M':
             # Other math
             self.math_operation(after[1].value)
+            self.skip(1)
+        elif token.value == 'K':
+            # Konstants
+            self.konstants(after[1].value)
             self.skip(1)
         # Check datatype
         elif token.value == '?':
