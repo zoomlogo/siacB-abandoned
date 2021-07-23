@@ -5,7 +5,9 @@ class SmartInput:
     def __init__(self, inputs=[]):
         self.reset = True if inputs else False
         self.i = 0
-        self.inputs = inputs
+        self.inputs = []
+        for i in inputs:
+            self.inputs.append(self.objectify(i))
 
     def input(self):
         if not self.reset:
