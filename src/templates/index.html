@@ -21,6 +21,11 @@
             a {
                 color: #aaaaee;
             }
+            button {
+                color: #eeeeee;
+                background: #444444;
+                border: none;
+            }
         </style>
     </head>
     <body>
@@ -43,6 +48,17 @@
         <details>
             <summary>FOOTER</summary>
             <textarea id="footer"></textarea>
+        </details>
+
+        <details>
+            <summary>INPUTS</summary>
+            <textarea id="inputs"></textarea>
+        </details>
+
+        <details open>
+            <summary>OUTPUT</summary>
+            <button onclick="copyToClipboard('output')" style="height:auto; display: inline-block;" type="button">Copy</button>
+            <textarea id="output" readonly></textarea>
         </details>
     </body>
 </html>
