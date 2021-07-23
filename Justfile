@@ -1,3 +1,5 @@
+set shell := ["bash.exe", "-c"]
+
 default:
     @just --list
 
@@ -18,3 +20,6 @@ stack:
 
 input:
     python src/skInput.py
+
+flask:
+    export FLASK_APP="src/flask_app.py"; flask run
