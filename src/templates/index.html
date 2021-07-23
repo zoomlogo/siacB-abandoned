@@ -24,14 +24,25 @@
     </head>
     <body>
         <h1><a href="https://github.com/PyGamer0/51AC8">51AC8</a></h1><hr><br>
-        FLAGS<br>
-        <textarea id="flags"></textarea><br>
-        HEADER<br>
-        <textarea id="header"></textarea><br>
-        CODE<br>
-        <textarea id="code"></textarea><br>
-        FOOTER<br>
-        <textarea id="footer"></textarea>
+        <details>
+            <summary>FLAGS</summary>
+            <textarea id="flags"></textarea><br>
+        </details>
+
+        <details>
+            <summary>HEADER</summary>
+            <textarea id="header"></textarea><br>
+        </details>
+
+        <details open>
+            <summary id="code-count">CODE: 0 bytes</summary>
+            <textarea id="code"></textarea><br>
+        </details>
+
+        <details>
+            <summary>FOOTER</summary>
+            <textarea id="footer"></textarea>
+        </details>
     </body>
 </html>
 
