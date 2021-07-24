@@ -49,7 +49,7 @@
         <h1><a href="https://github.com/PyGamer0/51AC8">51AC8</a></h1><hr>
         <button id="run">Run</button>
         <button id="link" onclick="generateLink();">Link</button>
-        <button id="cmc">CMC</button>
+        <button id="cmc" onclick="generateCMC();">CMC</button>
         <button id="cgcc" onclick="generateTIO();">CGCC</button>
         <br>
         <details>
@@ -151,6 +151,15 @@
                     ${"```"}
                     [Try it Online!](${encodeUrl()})
                     `.replace(/(\n)\s+/g, '$1');
+            }
+
+            function generateCMC() {
+                var stdout = document.getElementById("stdout");
+                var code = document.getElementById("code").value;
+                var flags = document.getElementById("flags").value;
+                var len = document.getElementById("code").value.length;
+                
+                stdout.value = `[51AC8](https://github.com/PyGamer0/51AC8), ${len} byte${"s".repeat(len != 1)}: ${"`"}[${code.replace("`", "\\`")}](${encodeUrl()})${"`"}`.replace(/(\n)\s*/g, '$1');
             }
 
             decodeUrl()
