@@ -39,6 +39,12 @@
                 e.select();
                 document.execCommand("copy");
             }
+
+            function updateCount(elem1, elem2) {
+                var code_elem = document.getElementById(elem1);
+                var count_elem = document.getElementById(elem2);
+                count_elem.innerText = `CODE: ${code_elem.value.length} bytes (SBCS)`;
+            }
         </script>
         <h1><a href="https://github.com/PyGamer0/51AC8">51AC8</a></h1><hr>
         <button id="run">Run</button>
@@ -57,7 +63,7 @@
 
         <details open>
             <summary id="code-count">CODE: 0 bytes (SBCS)</summary>
-            <textarea id="code"></textarea><br>
+            <textarea id="code" oninput="updateCount('code', 'code-count');" onkeyup="updateCount('code', 'code-count');"></textarea><br>
         </details>
 
         <details>
@@ -82,11 +88,6 @@
         </details>
 
         <script>
-            function updateCount() {
-                var code_elem = document.getElementById("code");
-                var count_elem = document.getElementById("code-count");
-                count_elem.innerText = `CODE: ${code_elem.value.length} bytes (SBCS)`;
-            }
             function decodeUrl() {
                 const queryString = window.location.search;
                 const urlParams = new URLSearchParams(queryString);
@@ -112,7 +113,7 @@
                 }
             }
             decodeUrl()
-            updateCount()
+            updateCount('code', 'code-count')
         </script>
     </body>
 </html>
