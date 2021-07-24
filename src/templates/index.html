@@ -54,14 +54,19 @@
         </details>
 
         <details>
-            <summary>INPUTS</summary>
-            <textarea id="inputs"></textarea>
+            <summary>STDIN</summary>
+            <textarea id="stdin"></textarea>
         </details>
 
         <details open>
-            <summary>OUTPUT</summary>
-            <button onclick="copyToClipboard('output')" style="height:auto; display: inline-block;" type="button">Copy</button>
-            <textarea id="output" readonly></textarea>
+            <summary>STDOUT</summary>
+            <button onclick="copyToClipboard('stdout')" style="height:auto; display: inline-block;" type="button">Copy</button>
+            <textarea id="stdout" readonly>as</textarea>
+        </details>
+
+        <details>
+            <summary>STDERR</summary>
+            <textarea id="stderr" readonly></textarea>
         </details>
     </body>
 </html>
