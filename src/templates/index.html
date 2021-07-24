@@ -50,7 +50,7 @@
         <button id="run">Run</button>
         <button id="link" onclick="generateLink();">Link</button>
         <button id="cmc">CMC</button>
-        <button id="cgcc">CGCC</button>
+        <button id="cgcc" onclick="generateTIO();">CGCC</button>
         <br>
         <details>
             <summary>FLAGS</summary>
@@ -136,6 +136,21 @@
 
             function eraseStdout() {
                 document.getElementById("stdout").value = "";
+            }
+
+            function generateTIO() {
+                var stdout = document.getElementById("stdout");
+                var code = document.getElementById("code").value;
+                var flags = document.getElementById("flags").value;
+                var len = document.getElementById("code").value.length;
+                
+                stdout.value = `
+                    # [51AC8](https://github.com/PyGamer0/51AC8), ${flags ? `\`${flags}\`, ` : ""}${len} byte${"s".repeat(len != 1)}
+                    ${"```"}
+                    ${code}
+                    ${"```"}
+                    [Try it Online!](${encodeUrl()})
+                    `.replace(/(\n)\s+/g, '$1');
             }
 
             decodeUrl()
