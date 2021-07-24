@@ -48,6 +48,7 @@
         </script>
         <h1><a href="https://github.com/PyGamer0/51AC8">51AC8</a></h1><hr>
         <button id="run">Run</button>
+        <button id="link">Link</button>
         <button id="cmc">CMC</button>
         <button id="cgcc">CGCC</button>
         <br>
@@ -63,7 +64,7 @@
 
         <details open>
             <summary id="code-count">CODE: 0 bytes (SBCS)</summary>
-            <textarea id="code" oninput="updateCount('code', 'code-count');" onkeyup="updateCount('code', 'code-count');"></textarea><br>
+            <textarea id="code" oninput="updateCount('code', 'code-count');"></textarea><br>
         </details>
 
         <details>
@@ -112,6 +113,26 @@
                     stdin_elem.value = stdin;
                 }
             }
+
+            function encodeUrl() {
+                var flags = document.getElementById("flags").value;
+                var header = document.getElementById("header").value;
+                var code = document.getElementById("code").value;
+                var footer = document.getElementById("footer").value;
+                var stdin = document.getElementById("stdin").value;
+
+                var params = "?flags=" + encodeURIComponent(flags) + "&header=" + encodeURIComponent(header) + "&code=" + encodeURIComponent(code);
+                params += "&footer=" + encodeURIComponent(footer) + "&stdin=" + encodeURIComponent(stdin);
+
+                var url = location.protocol + '//' + location.host + location.pathname + params;
+                return url;
+            }
+
+            function generateLink() {
+                var stdout = document.getElementById("stdout");
+                stdout.value = encodeUrl();
+            }
+
             decodeUrl()
             updateCount('code', 'code-count')
         </script>
