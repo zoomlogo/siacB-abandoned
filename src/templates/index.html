@@ -56,7 +56,7 @@
         </details>
 
         <details open>
-            <summary id="code-count">CODE: 0 bytes</summary>
+            <summary id="code-count">CODE: 0 bytes (SBCS)</summary>
             <textarea id="code"></textarea><br>
         </details>
 
@@ -80,6 +80,40 @@
             <summary>STDERR</summary>
             <textarea id="stderr" readonly></textarea>
         </details>
+
+        <script>
+            function updateCount() {
+                var code_elem = document.getElementById("code");
+                var count_elem = document.getElementById("code-count");
+                count_elem.innerText = `CODE: ${code_elem.value.length} bytes (SBCS)`;
+            }
+            function decodeUrl() {
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+
+                var flags = urlParams.get("flags");
+                var header = urlParams.get("header");
+                var code = urlParams.get("code");
+                var footer = urlParams.get("footer");
+                var stdin = urlParams.get("stdin");
+
+                var flags_elem = document.getElementById("flags");
+                var header_elem = document.getElementById("header");
+                var code_elem = document.getElementById("code");
+                var footer_elem = document.getElementById("footer");
+                var stdin_elem = document.getElementById("stdin");
+
+                if (flags || header || code || footer || stdin) {
+                    flags_elem.value = flags;
+                    header_elem.value = header;
+                    code_elem.value = code;
+                    footer_elem.value = footer;
+                    stdin_elem.value = stdin;
+                }
+            }
+            decodeUrl()
+            updateCount()
+        </script>
     </body>
 </html>
 
