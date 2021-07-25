@@ -131,18 +131,26 @@
                 var footer = document.getElementById("footer").value;
                 var stdin = document.getElementById("stdin").value;
 
+                var stdout = document.getElementById("stdout");
+                var stderr = document.getElementById("stderr");
+
                 const session = $("session-code")[0].innerHTML
-                console.log(session);
 
                 if (run_elem.innerText == "Run") {
                     run_elem.innerText = "Stop";
                     var form = {
                         flags: flags,
-                        code: header + "\n" + code + "\n" + footer,
+                        code: header + code + footer,
                         stdin: stdin,
                     };
+                    $.post("/execute", form, res => {
+                        stdout = res.stdout;
+                        stderr = res.stderr;
+                        run_elem.innerText = "Run";
+                    });
                 } else {
                     run_elem.innerText = "Run";
+                    $.post("/kill", { session: session }, res => 0);
                 }
             }
         </script>

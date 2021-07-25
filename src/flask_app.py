@@ -3,6 +3,7 @@ from flask import (
     Flask,
     render_template,
     url_for,
+    request,
 )
 
 import skrun
@@ -27,4 +28,13 @@ def home():
     session = secrets.token_hex(64)
     sessions[session] = None
     return render_template("index.html", session=session)
+
+@app.route('/execute', methods=("POST",))
+def execute():
+    flags = request.form["flags"].split("\n")
+    code = request.form["code"]
+    stdin = request.form["stdin"].split("\n")
+    session = request.form["session"]
+
+    print(flags, code, stdin, session)
 
