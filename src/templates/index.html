@@ -30,16 +30,134 @@
             summary {
                 padding: 5px;
             }
+            session-code {
+                display: none;
+            }
         </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script>
+            function decodeUrl() {
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+
+                var flags = urlParams.get("flags");
+                var header = urlParams.get("header");
+                var code = urlParams.get("code");
+                var footer = urlParams.get("footer");
+                var stdin = urlParams.get("stdin");
+
+                var flags_elem = document.getElementById("flags");
+                var header_elem = document.getElementById("header");
+                var code_elem = document.getElementById("code");
+                var footer_elem = document.getElementById("footer");
+                var stdin_elem = document.getElementById("stdin");
+
+                if (flags || header || code || footer || stdin) {
+                    flags_elem.value = flags;
+                    header_elem.value = header;
+                    code_elem.value = code;
+                    footer_elem.value = footer;
+                    stdin_elem.value = stdin;
+                }
+            }
+
+            function encodeUrl() {
+                var flags = document.getElementById("flags").value;
+                var header = document.getElementById("header").value;
+                var code = document.getElementById("code").value;
+                var footer = document.getElementById("footer").value;
+                var stdin = document.getElementById("stdin").value;
+
+                var params = "?flags=" + encodeURIComponent(flags) + "&header=" + encodeURIComponent(header) + "&code=" + encodeURIComponent(code);
+                params += "&footer=" + encodeURIComponent(footer) + "&stdin=" + encodeURIComponent(stdin);
+
+                var url = location.protocol + '//' + location.host + location.pathname + params;
+                return url;
+            }
+
+            function generateLink() {
+                var stdout = document.getElementById("stdout");
+                stdout.value = encodeUrl();
+            }
+
+            function eraseStdout() {
+                document.getElementById("stdout").value = "";
+            }
+
+            function generateTIO() {
+                var stdout = document.getElementById("stdout");
+                var code = document.getElementById("code").value;
+                var flags = document.getElementById("flags").value;
+                var len = document.getElementById("code").value.length;
+                
+                stdout.value = `
+                    # [51AC8](https://github.com/PyGamer0/51AC8), ${flags ? `\`${flags}\`, ` : ""}${len} byte${"s".repeat(len != 1)}
+                    ${"```"}
+                    ${code}
+                    ${"```"}
+                    [Try it Online!](${encodeUrl()})
+                    `.replace(/(\n)\s+/g, '$1');
+            }
+
+            function generateCMC() {
+                var stdout = document.getElementById("stdout");
+                var code = document.getElementById("code").value;
+                var flags = document.getElementById("flags").value;
+                var len = document.getElementById("code").value.length;
+                
+                stdout.value = `[51AC8](https://github.com/PyGamer0/51AC8), ${len} byte${"s".repeat(len != 1)}: ${"`"}[${code.replace("`", "\\`")}](${encodeUrl()})${"`"}`.replace(/(\n)\s*/g, '$1');
+            }
+
+            function copyToClipboard() {
+                var stdout = document.getElementById('stdout');
+                stdout.select();
+                document.execCommand("copy");
+                stdout.deselect();
+            }
+
+            function updateCount() {
+                var code_elem = document.getElementById('code');
+                var count_elem = document.getElementById('code-count');
+                count_elem.innerText = `CODE: ${code_elem.value.length} bytes (SBCS)`;
+            }
+
+            function runCode() {
+                var run_elem = document.getElementById('run');
+
+                var flags = document.getElementById("flags").value;
+                var header = document.getElementById("header").value;
+                var code = document.getElementById("code").value;
+                var footer = document.getElementById("footer").value;
+                var stdin = document.getElementById("stdin").value;
+
+                const session = $("session-code")[0].innerHTML
+                console.log(session);
+
+                if (run_elem.innerText == "Run") {
+                    run_elem.innerText = "Stop";
+                    var form = {
+                        flags: flags,
+                        code: header + "\n" + code + "\n" + footer,
+                        stdin: stdin,
+                    };
+                } else {
+                    run_elem.innerText = "Run";
+                }
+            }
+
+            decodeUrl()
+            updateCount()
+        </script>
     </head>
     <body>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
         <h1><a href="https://github.com/PyGamer0/51AC8">51AC8</a></h1><hr>
         <button id="run" onclick="runCode();">Run</button>
         <button id="link" onclick="generateLink();">Link</button>
         <button id="cmc" onclick="generateCMC();">CMC</button>
         <button id="cgcc" onclick="generateTIO();">CGCC</button>
         <br>
+        <session-code>{{session}}</session-code>
         <details>
             <summary>FLAGS</summary>
             <textarea id="flags"></textarea><br>
