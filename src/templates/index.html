@@ -33,19 +33,7 @@
         </style>
     </head>
     <body>
-        <script>
-            function copyToClipboard(elem) {
-                var e = document.getElementById(elem);
-                e.select();
-                document.execCommand("copy");
-            }
-
-            function updateCount(elem1, elem2) {
-                var code_elem = document.getElementById(elem1);
-                var count_elem = document.getElementById(elem2);
-                count_elem.innerText = `CODE: ${code_elem.value.length} bytes (SBCS)`;
-            }
-        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
         <h1><a href="https://github.com/PyGamer0/51AC8">51AC8</a></h1><hr>
         <button id="run">Run</button>
         <button id="link" onclick="generateLink();">Link</button>
@@ -64,7 +52,7 @@
 
         <details open>
             <summary id="code-count">CODE: 0 bytes (SBCS)</summary>
-            <textarea id="code" oninput="updateCount('code', 'code-count');"></textarea><br>
+            <textarea id="code" oninput="updateCount();"></textarea><br>
         </details>
 
         <details>
@@ -79,7 +67,7 @@
 
         <details open>
             <summary>STDOUT</summary>
-            <button onclick="copyToClipboard('stdout')" style="height:auto; display: inline-block;" type="button">Copy</button>
+            <button onclick="copyToClipboard()" style="height:auto; display: inline-block;" type="button">Copy</button>
             <button onclick="eraseStdout()">x</button>
             <textarea id="stdout" readonly></textarea>
         </details>
@@ -160,6 +148,19 @@
                 var len = document.getElementById("code").value.length;
                 
                 stdout.value = `[51AC8](https://github.com/PyGamer0/51AC8), ${len} byte${"s".repeat(len != 1)}: ${"`"}[${code.replace("`", "\\`")}](${encodeUrl()})${"`"}`.replace(/(\n)\s*/g, '$1');
+            }
+
+            function copyToClipboard() {
+                var stdout = document.getElementById('stdout');
+                stdout.select();
+                document.execCommand("copy");
+                stdout.deselect();
+            }
+
+            function updateCount() {
+                var code_elem = document.getElementById('code');
+                var count_elem = document.getElementById('code-count');
+                count_elem.innerText = `CODE: ${code_elem.value.length} bytes (SBCS)`;
             }
 
             decodeUrl()
