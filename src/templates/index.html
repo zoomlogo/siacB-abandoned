@@ -142,6 +142,7 @@
                         flags: flags,
                         code: header + code + footer,
                         stdin: stdin,
+                        session: session,
                     };
                     $.post("/execute", form, res => {
                         stdout = res.stdout;
