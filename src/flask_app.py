@@ -26,5 +26,5 @@ terminated = set()
 def home():
     session = secrets.token_hex(64)
     sessions[session] = None
-    return render_template("index.html")
+    return render_template("index.html", session=session)
 
