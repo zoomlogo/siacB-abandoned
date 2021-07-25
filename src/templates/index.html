@@ -35,7 +35,7 @@
     <body>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
         <h1><a href="https://github.com/PyGamer0/51AC8">51AC8</a></h1><hr>
-        <button id="run">Run</button>
+        <button id="run" onclick="runCode();">Run</button>
         <button id="link" onclick="generateLink();">Link</button>
         <button id="cmc" onclick="generateCMC();">CMC</button>
         <button id="cgcc" onclick="generateTIO();">CGCC</button>
@@ -163,8 +163,32 @@
                 count_elem.innerText = `CODE: ${code_elem.value.length} bytes (SBCS)`;
             }
 
+            function runCode() {
+                var run_elem = document.getElementById('run');
+
+                var flags = document.getElementById("flags").value;
+                var header = document.getElementById("header").value;
+                var code = document.getElementById("code").value;
+                var footer = document.getElementById("footer").value;
+                var stdin = document.getElementById("stdin").value;
+
+                const session = $("session-code")[0].innerHTML
+                console.log(session);
+
+                if (run_elem.innerText == "Run") {
+                    run_elem.innerText = "Stop";
+                    var form = {
+                        flags: flags,
+                        code: header + "\n" + code + "\n" + footer,
+                        stdin: stdin,
+                    };
+                } else {
+                    run_elem.innerText = "Run";
+                }
+            }
+
             decodeUrl()
-            updateCount('code', 'code-count')
+            updateCount()
         </script>
     </body>
 </html>
