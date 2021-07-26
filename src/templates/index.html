@@ -106,7 +106,7 @@
                 var flags = document.getElementById("flags").value;
                 var len = document.getElementById("code").value.length;
                 
-                stdout.value = `[51AC8](https://github.com/PyGamer0/51AC8), ${len} byte${"s".repeat(len != 1)}: [${"`"}${code.replace("`", "\\`")}]${"`"}(${encodeUrl()})`.replace(/(\n)\s*/g, '$1');
+                stdout.value = `[51AC8](https://github.com/PyGamer0/51AC8), ${len} byte${"s".repeat(len != 1)}: [${"`"}${code.replace("`", "\\`")}${"`"}](${encodeUrl()})`.replace(/(\n)\s*/g, '$1');
             }
 
             function copyToClipboard() {
