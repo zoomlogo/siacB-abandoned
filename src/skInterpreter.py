@@ -257,7 +257,7 @@ class Interpreter:
         elif token.value == 't':
             # Pop and print (append to stdout) the top of the stack
             if not self.stack.is_empty():
-                self.stdout.append(self.stack.pop().value)
+                self.stdout.append(str(self.stack.pop().value))
         # Constants
         elif token.type == TType.NUMBER:
             # Number

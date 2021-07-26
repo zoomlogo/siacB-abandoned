@@ -145,8 +145,8 @@
                         session: session,
                     };
                     $.post("/execute", form, res => {
-                        stdout = res.stdout;
-                        stderr = res.stderr;
+                        stdout.value = res.stdout;
+                        stderr.value = res.stderr;
                         run_elem.innerText = "Run";
                     });
                 } else {
@@ -196,7 +196,7 @@
             <textarea id="stdout" readonly></textarea>
         </details>
 
-        <details>
+        <details open>
             <summary>STDERR</summary>
             <textarea id="stderr" readonly></textarea>
         </details>
