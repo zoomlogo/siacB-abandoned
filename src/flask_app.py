@@ -53,3 +53,13 @@ def execute():
 
     return result
 
+@app.route("/kill", methods=("POST",))
+def kill():
+    session = request.form["session"]
+
+    if sessions.get(session) is None:
+        return ""
+
+    sessions[session].kill()
+    terminated.add(session)
+    return ""
