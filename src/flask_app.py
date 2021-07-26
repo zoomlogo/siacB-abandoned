@@ -48,8 +48,9 @@ def execute():
         "stderr": None,
     }
 
-    pool = multiprocessing.Pool(processes=10)
-    result['stdout'] = '\n'.join(pool.apply_async(skrun.run, (code, flags, stdin)).get())
+    sessions[session] = multiprocessing.Pool(2)
+    
+    result['stdout'] = '\n'.join(sessions[session].apply_async(skrun.run, (code, flags, stdin)).get())
 
     return result
 
@@ -60,6 +61,5 @@ def kill():
     if sessions.get(session) is None:
         return ""
 
-    sessions[session].kill()
-    terminated.add(session)
+    sessions[session].terminate()
     return ""
