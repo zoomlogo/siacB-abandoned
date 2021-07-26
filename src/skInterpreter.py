@@ -219,6 +219,7 @@ class Interpreter:
             "A": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
             "a": "abcdefghijklmnopqrstuvwxyz",
             "e": np.e,
+            "h": "Hello, World!",
             "p": np.pi,
             "s": datetime.datetime.now().second,
             "m": datetime.datetime.now().microsecond,
