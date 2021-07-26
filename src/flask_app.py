@@ -48,6 +48,10 @@ def execute():
         "stderr": None,
     }
 
+    if session in terminated:
+        terminated.remove(session)
+        result["stderr"] = "session terminated"
+
     sessions[session] = multiprocessing.Pool(2)
     
     result['stdout'] = '\n'.join(sessions[session].apply_async(skrun.run, (code, flags, stdin)).get())
@@ -62,4 +66,5 @@ def kill():
         return ""
 
     sessions[session].terminate()
+    terminated.add(session)
     return ""
