@@ -62,7 +62,7 @@ class Interpreter:
         type = self.types_from_instance(value)[0]
 
         if type == OType.NUMBER:
-            return list(range(value))
+            return list(range(1, value + 1))
         else:
             return random.choice(value)
 
@@ -70,7 +70,7 @@ class Interpreter:
         type = self.types_from_instance(value)[0]
 
         if type == OType.NUMBER:
-            return list(range(1, value + 1))
+            return list(range(value))
         else:
             return np.rot90(value)
 
