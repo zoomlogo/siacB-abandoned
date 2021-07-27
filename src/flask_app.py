@@ -70,6 +70,7 @@ def kill():
     terminated.add(session)
     return ""
 
+# Test
 @app.route("/update", methods=("GET", "POST"))
 def update():
     # Updates the server after a commit
