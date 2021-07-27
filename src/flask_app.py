@@ -68,3 +68,20 @@ def kill():
     sessions[session].terminate()
     terminated.add(session)
     return ""
+
+@app.route("/update", methods=("GET", "POST"))
+def update():
+    # Updates the server after a commit
+    # It's possible that it is now working.
+    if request.method == "POST":
+        repo = git.Repo("PATH TO WHERE YOU'RE STORING THINGS")
+        origin = repo.remotes.origin
+        with repo.config_writer() as git_config:
+            git_config.set_value(
+                "user", "email", "IMPORTANT - PUT THE EMAIL GITHUB GIVES YOU, NOT YOUR ACTUAL EMAIL"
+            )
+            git_config.set_value("user", "name", "PyGamer0")
+        origin.pull()
+        return "Updated PythonAnywhere successfully", 200
+    else:
+        return "Wrong event type", 400
