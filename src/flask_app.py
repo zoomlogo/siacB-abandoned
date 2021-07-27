@@ -72,8 +72,6 @@ def kill():
 
 @app.route("/update", methods=("GET", "POST"))
 def update():
-    # Updates the server after a commit
-    # It's possible that it is now working.
     if request.method == "POST":
         repo = git.Repo("~/51AC8")
         origin = repo.remotes.origin
