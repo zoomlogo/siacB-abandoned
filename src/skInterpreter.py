@@ -93,7 +93,7 @@ class Interpreter:
             stack.push(obj)
         elif operation == '.':
             # Duplicate the top of the stack
-            top = stack.top()
+            op = stack.top()
             copy = top.copy()
             stack.push(copy)
         elif operation == ',':
