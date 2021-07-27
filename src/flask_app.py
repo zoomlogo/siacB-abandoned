@@ -1,5 +1,6 @@
 import secrets
 import multiprocessing
+import git
 from flask import (
     Flask,
     render_template,
@@ -74,11 +75,11 @@ def update():
     # Updates the server after a commit
     # It's possible that it is now working.
     if request.method == "POST":
-        repo = git.Repo("PATH TO WHERE YOU'RE STORING THINGS")
+        repo = git.Repo("~/51AC8")
         origin = repo.remotes.origin
         with repo.config_writer() as git_config:
             git_config.set_value(
-                "user", "email", "IMPORTANT - PUT THE EMAIL GITHUB GIVES YOU, NOT YOUR ACTUAL EMAIL"
+                "user", "email", "64531844+PyGamer0@users.noreply.github.com"
             )
             git_config.set_value("user", "name", "PyGamer0")
         origin.pull()
