@@ -1,6 +1,9 @@
 import secrets
 import multiprocessing
-import git
+try:
+    import git
+except:
+    pass
 from flask import (
     Flask,
     render_template,

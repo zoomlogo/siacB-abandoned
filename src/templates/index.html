@@ -154,6 +154,11 @@
                     $.post("/kill", { session: session }, res => 0);
                 }
             }
+
+            function autoAdjustTextArea(o) {
+              o.style.height = '1px';
+              o.style.height = o.scrollHeight + 'px';
+            }
         </script>
     </head>
     <body>
@@ -166,27 +171,27 @@
         <session-code>{{session}}</session-code>
         <details>
             <summary>FLAGS</summary>
-            <textarea id="flags"></textarea><br>
+            <textarea id="flags" oninput="autoAdjustTextArea(this);"></textarea><br>
         </details>
 
         <details>
             <summary>HEADER</summary>
-            <textarea id="header"></textarea><br>
+            <textarea id="header" oninput="autoAdjustTextArea(this);"></textarea><br>
         </details>
 
         <details open>
             <summary id="code-count">CODE: 0 bytes (SBCS)</summary>
-            <textarea id="code" oninput="updateCount();"></textarea><br>
+            <textarea id="code" oninput="updateCount();autoAdjustTextArea(this);"></textarea><br>
         </details>
 
         <details>
             <summary>FOOTER</summary>
-            <textarea id="footer"></textarea>
+            <textarea id="footer" oninput="autoAdjustTextArea(this);"></textarea>
         </details>
 
         <details>
             <summary>STDIN</summary>
-            <textarea id="stdin"></textarea>
+            <textarea id="stdin" oninput="autoAdjustTextArea(this);"></textarea>
         </details>
 
         <details open>
