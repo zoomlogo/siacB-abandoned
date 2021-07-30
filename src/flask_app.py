@@ -63,8 +63,8 @@ def execute():
         result['stdout'] = '\n'.join(async_run.get())
     except Exception as e:
         result['stderr'] = str(e)
-
-    return result
+    finally:
+        return result
 
 @app.route("/kill", methods=("POST",))
 def kill():
