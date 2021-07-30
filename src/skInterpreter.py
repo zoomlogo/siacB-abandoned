@@ -129,8 +129,19 @@ class Interpreter:
             popped2 = self.stack.pop()
         value1 = popped.value
         value2 = popped2.value
+        type1, type2 = self.types_from_instance(value1, value2)
         result = {
-            "+": lambda x, y: x + y,  # Addition
+            "+": {
+                (OType.NUMBER, OType.NUMBER): lambda x, y: x + y,
+                (OType.ARRAY, OType.ARRAY): lambda x, y: x + y,
+                (OType.NUMBER, OType.ARRAY): lambda x, y: x + y,
+                (OType.ARRAY, OType.NUMBER): lambda x, y: x + y,
+                (OType.STRING, OType.STRING): lambda x, y: x + y,
+                (OType.STRING, OType.NUMBER): lambda x, y: x + str(y),
+                (OType.NUMBER, OType.STRING): lambda x, y: str(x) + y,
+                (OType.ARRAY, OType.STRING): lambda x, y: x + y,
+                (OType.STRING, OType.ARRAY): lambda x, y: x + y,
+            }[(type2, type1)],  # Addition
             "-": lambda x, y: x - y,  # Subtraction
             "×": lambda x, y: x * y,  # Multiplication
             "÷": lambda x, y: x / y,  # Division
