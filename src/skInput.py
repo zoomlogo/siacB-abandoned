@@ -36,7 +36,7 @@ class SmartInput:
                 type = skObject.OType.NUMBER
             except:
                 try:
-                    value = np.array(eval(value))
+                    value = np.array(eval(value), dtype=object) # So that we can input anything
                     type = skObject.OType.ARRAY
                 except:
                     pass
