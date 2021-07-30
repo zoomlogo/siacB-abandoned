@@ -48,8 +48,8 @@ def execute():
         }
 
     result = {
-        "stdout": None,
-        "stderr": None,
+        "stdout": '',
+        "stderr": '',
     }
 
     if session in terminated:
@@ -58,7 +58,11 @@ def execute():
 
     sessions[session] = multiprocessing.Pool(2)
     
-    result['stdout'] = '\n'.join(sessions[session].apply_async(skrun.run, (code, flags, stdin)).get())
+    try:
+        async_run = sessions[session].apply_async(skrun.run, (code, flags, stdin))
+        result['stdout'] = '\n'.join(async_run.get())
+    except Exception as e:
+        result['stderr'] = str(e)
 
     return result
 
