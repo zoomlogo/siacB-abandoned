@@ -220,6 +220,7 @@ class Interpreter:
             "M": datetime.datetime.now().minute,
             "w": "www",
             "I": np.eye(3),
+            "o": np.Inf,
         }[k]
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
