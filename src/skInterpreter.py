@@ -58,22 +58,6 @@ class Interpreter:
                 res.append(OType.STRING)
         return res
 
-    def command_r(self, value):
-        type = self.types_from_instance(value)[0]
-
-        if type == OType.NUMBER:
-            return list(range(1, value + 1))
-        else:
-            return random.choice(value)
-
-    def command_R(self, value):
-        type = self.types_from_instance(value)[0]
-
-        if type == OType.NUMBER:
-            return list(range(value))
-        else:
-            return np.rot90(value)
-
     def command_eq(self, value1, value2):
         type1, type2 = self.types_from_instance(value1, value2)
 
@@ -170,6 +154,7 @@ class Interpreter:
 
     def do_arity1(self, operation):
         value = self.stack.pop().value
+        type = self.types_from_instance(value)[0]
         result = {
             "~": lambda x: ~x,  # Bitwise not
             "¬": lambda x: 1 if not x else 0,  # Logical not
@@ -186,8 +171,13 @@ class Interpreter:
             "∏": lambda x: np.ceil(x), # Ceil
             "∐": lambda x: np.floor(x), # Floor
             "L": lambda x: len(x),  # Len
-            "r": self.command_r,    # Range or random.choice
-            "R": self.command_R,    # Range 1..n or rot90
+            "r": {
+                OType.NUMBER: lambda x: np.arange(1, x + 1),
+            }.get(type, lambda x: random.choice(x)),    # Range 1..n or random.choice
+            "R": {
+                OType.NUMBER: lambda x: np.arange(x),
+                OType.ARRAY: lambda x: np.rot90(x)
+            }.get(type),    # Range or rot90
             "I": lambda x: np.eye(x),    # Identity matrix
             "S": lambda x: np.sort(x),  # Sort
             "T": lambda x: x.T,   # Transpose
