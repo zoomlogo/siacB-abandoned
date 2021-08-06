@@ -99,8 +99,8 @@ class Interpreter:
             # Reverse the top 2 elements
             popped = stack.pop()
             popped2 = stack.pop()
-            stack.push(popped2)
             stack.push(popped)
+            stack.push(popped2)
 
     def do_arity2_with_infix_support(self, operation, after):
         # Get 2 values to operate on
