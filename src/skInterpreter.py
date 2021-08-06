@@ -77,7 +77,7 @@ class Interpreter:
             stack.push(obj)
         elif operation == '.':
             # Duplicate the top of the stack
-            op = stack.top()
+            top = stack.top()
             copy = top.copy()
             stack.push(copy)
         elif operation == ',':
