@@ -286,7 +286,7 @@ class Interpreter:
         elif token.type == TType.COMMAND and token.value in "&|^∧∨=≠><≥≤\"cĪŚ":
             self.do_arity2(token.value)
         # Arity 1 operators
-        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼LrRI±‖∏∐STFBJ":
+        elif token.type == TType.COMMAND and token.value in "~¬CD²³√∛¼LrRI±∑‖∏∐STFBJ":
             self.do_arity1(token.value)
         elif token.value == '½':
             # Half or split in 2 equal parts
