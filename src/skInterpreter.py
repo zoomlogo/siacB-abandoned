@@ -120,7 +120,9 @@ class Interpreter:
                 (OType.NUMBER, OType.STRING): lambda x, y: str(x) + y,
             }.get((type2, type1), lambda x, y: x + y),  # Addition
             "-": lambda x, y: x - y,  # Subtraction
-            "×": lambda x, y: x * y,  # Multiplication
+            "×": {
+                (OType.STRING, OType.STRING): lambda x, y: chr(ord(x) * ord(y))
+            }.get((type1, type2), lambda x, y: x * y),  # Multiplication
             "÷": lambda x, y: x / y,  # Division
             "*": lambda x, y: x ** y, # Exponentiation
             "%": lambda x, y: x % y,  # Modulo
