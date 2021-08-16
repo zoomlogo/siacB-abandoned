@@ -186,7 +186,7 @@ class Interpreter:
             "F": lambda x: x.flatten(), # flatten
             "∑": lambda x: np.sum(x), # Sum
             "B": lambda x: np.array([i for i in map(int, bin(x)[2:])]),  # Binary
-            "J": lambda x: ', '.join(map(str, x.tolist())),  # Join
+            "J": lambda x: '\n'.join(map(str, x.tolist())),  # Join
         }[operation](value)
         self.stack.push(self.smart_input.objectify_from_instance(result))
 
