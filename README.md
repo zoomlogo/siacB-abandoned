@@ -16,4 +16,4 @@ git clone https://github.com/Pygamer0/dinoux
 - [Jelly](https://github.com/DennisMitchell/jellylanguage)
 
 ## Name
-dinoux is a name which has no meaning. It was suggested by my brother.
+dinoux is a name which *currently* has no meaning. It was suggested by my brother.
